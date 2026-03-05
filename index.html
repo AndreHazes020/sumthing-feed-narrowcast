@@ -511,24 +511,7 @@
   </div>
 
   <div class="branding">
-    <svg class="brand-logo" viewBox="0 0 440 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- S -->
-      <path d="M0 18C0 8 8 0 18 0H82C92 0 100 8 100 18V20C100 25 96 28 92 28H28C22 28 18 32 18 38V42C18 48 22 52 28 52H72C82 52 100 60 100 70V82C100 92 92 100 82 100H18C8 100 0 92 0 82V78C0 73 4 70 8 70H72C78 70 82 66 82 60V58C82 52 78 48 72 48H28C8 48 0 40 0 30V18Z" fill="#C7F50A"/>
-      <!-- U -->
-      <path d="M110 0H128V72C128 82 136 90 146 90H164C174 90 182 82 182 72V0H200V82C200 92 192 100 182 100H128C118 100 110 92 110 82V0Z" fill="#C7F50A"/>
-      <!-- M -->
-      <path d="M210 0H228L260 50L292 0H310V100H292V36L264 80H256L228 36V100H210V0Z" fill="#C7F50A"/>
-      <!-- T -->
-      <path d="M0 110H120V128H70V200H50V128H0V110Z" fill="#C7F50A"/>
-      <!-- H -->
-      <path d="M130 110H148V146H182V110H200V200H182V164H148V200H130V110Z" fill="#C7F50A"/>
-      <!-- I -->
-      <path d="M210 110H228V200H210V110Z" fill="#C7F50A"/>
-      <!-- N -->
-      <path d="M240 110H258L310 172V110H328V200H310L258 138V200H240V110Z" fill="#C7F50A"/>
-      <!-- G -->
-      <path d="M340 118C340 113 345 110 350 110H430C435 110 440 113 440 118V120C440 125 435 128 430 128H358V182H422V164H390V148H440V192C440 197 436 200 430 200H350C345 200 340 197 340 192V118Z" fill="#C7F50A"/>
-    </svg>
+    <img class="brand-logo" src="https://cdn.prod.website-files.com/64c28276d2b840e5d9b7d9a4/66f6cd36c788b6f03fe23c26_SUMTHING.LOGO.ULTRALIME.png" alt="Sumthing">
   </div>
 
   <div class="slide-counter" id="slideCounter"></div>
@@ -581,7 +564,9 @@
           if (!response.ok) throw new Error(`API error: ${response.status}`);
 
           const result = await response.json();
-          return result.data || [];
+          console.log('API response:', JSON.stringify(result).substring(0, 500));
+          const items = result.data || result.items || result.results || result.news || (Array.isArray(result) ? result : []);
+          return items.slice(0, 10);
         } catch (err) {
           console.warn(`Fetch attempt ${attempt}/${retries} failed:`, err.message);
           if (attempt === retries) throw err;
