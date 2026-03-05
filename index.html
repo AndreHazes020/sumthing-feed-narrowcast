@@ -574,8 +574,9 @@
 
     async function fetchNews(projectIds, pageSize = FULL_PAGE_SIZE) {
       const params = new URLSearchParams({
-        pageNumber: '1',
+        pageNumber: '0',
         pageSize: String(pageSize),
+        sampling: 'true',
         withSupporters: 'true'
       });
       projectIds.forEach(id => params.append('projectIds', id));
