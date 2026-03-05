@@ -221,7 +221,7 @@
 
     @keyframes slideTextAway {
       0% { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0.25; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(100%); }
     }
 
     .slide-content.video-text-hide ~ .slide-overlay {
@@ -230,7 +230,7 @@
 
     @keyframes fadeOverlay {
       0% { opacity: 1; }
-      100% { opacity: 0.15; }
+      100% { opacity: 0; }
     }
 
     .category-badge {
@@ -285,27 +285,27 @@
     }
 
     .partner-logo {
-      width: 44px;
-      height: 44px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       object-fit: cover;
       border: none;
-      background: transparent;
+      background: #fff;
       flex-shrink: 0;
     }
 
     .partner-logo-placeholder {
-      width: 44px;
-      height: 44px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      background: transparent;
+      background: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Oswald', sans-serif;
       font-weight: 700;
-      font-size: 1rem;
-      color: #fff;
+      font-size: 0.75rem;
+      color: var(--bg);
       border: none;
       flex-shrink: 0;
     }
