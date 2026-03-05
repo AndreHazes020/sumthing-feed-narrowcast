@@ -221,7 +221,7 @@
 
     @keyframes slideTextAway {
       0% { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(100%); }
+      100% { opacity: 0.25; transform: translateY(0); }
     }
 
     .slide-content.video-text-hide ~ .slide-overlay {
@@ -230,7 +230,7 @@
 
     @keyframes fadeOverlay {
       0% { opacity: 1; }
-      100% { opacity: 0; }
+      100% { opacity: 0.15; }
     }
 
     .category-badge {
@@ -289,8 +289,8 @@
       height: 44px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid var(--highlight);
-      background: #fff;
+      border: none;
+      background: transparent;
       flex-shrink: 0;
     }
 
@@ -298,15 +298,15 @@
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: var(--highlight);
+      background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Oswald', sans-serif;
       font-weight: 700;
       font-size: 1rem;
-      color: var(--bg);
-      border: 2px solid var(--highlight);
+      color: #fff;
+      border: none;
       flex-shrink: 0;
     }
 
@@ -528,7 +528,7 @@
     const FETCH_TIMEOUT = 30000;
     const MAX_RETRIES = 3;
     const INITIAL_PAGE_SIZE = 6;
-    const FULL_PAGE_SIZE = 24;
+    const FULL_PAGE_SIZE = 12;
 
     let newsItems = [];
     let currentIndex = 0;
