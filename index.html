@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sumthing Impact News</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #0ea573;
+      --primary-light: #34d399;
+      --dark: #0f172a;
+      --dark-card: #1e293b;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+    }
+
+    /* Loading screen */
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--dark);
+      z-index: 1000;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+
+    .loading-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid var(--dark-card);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .loading-text {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Carousel container */
+    .carousel {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Individual slide */
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      opacity: 0;
+      visibility: hidden;
+      transition: none;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      z-index: 2;
+    }
+
+    .slide.entering {
+      animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .slide.exiting {
+      animation: slideOut 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      z-index: 1;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(60px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    @keyframes slideOut {
+      from {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(-60px) scale(0.98);
+      }
+    }
+
+    /* Media section (left side) */
+    .slide-media {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .slide-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .slide-media .image-gallery {
+      position: absolute;
+      inset: 0;
+    }
+
+    .slide-media .image-gallery img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .slide-media .image-gallery img.gallery-active {
+      opacity: 1;
+    }
+
+    .media-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, transparent 60%, var(--dark) 100%);
+      pointer-events: none;
+    }
+
+    /* Video styles */
+    .slide-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .slide-media iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Content section (right side) */
+    .slide-content {
+      width: 480px;
+      min-width: 480px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem 2.5rem;
+      background: var(--dark);
+      position: relative;
+      overflow-y: auto;
+    }
+
+    .slide-content::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .slide-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .slide-content::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    .news-type-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.85rem;
+      background: rgba(14, 165, 115, 0.15);
+      color: var(--primary-light);
+      border: 1px solid rgba(14, 165, 115, 0.3);
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.5rem;
+    }
+
+    .news-type-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--primary-light);
+      border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .author-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .author-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+    }
+
+    .author-avatar-placeholder {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+      border: 2px solid var(--primary);
+    }
+
+    .author-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .author-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .publish-date {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+
+    .news-text {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text);
+      margin-bottom: 2rem;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    /* Progress bar */
+    .progress-bar-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      z-index: 100;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      width: 0%;
+      transition: width 0.3s linear;
+      border-radius: 0 2px 2px 0;
+    }
+
+    /* Slide indicators */
+    .slide-indicators {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 100;
+    }
+
+    .indicator {
+      width: 32px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.2);
+      transition: all 0.4s ease;
+      cursor: pointer;
+    }
+
+    .indicator.active {
+      background: var(--primary);
+      width: 48px;
+    }
+
+    /* Slide counter */
+    .slide-counter {
+      position: fixed;
+      top: 24px;
+      right: 32px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      z-index: 100;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    /* Logo / branding */
+    .branding {
+      position: fixed;
+      top: 24px;
+      left: 32px;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      z-index: 100;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: #fff;
+    }
+
+    .brand-text {
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-text span {
+      color: var(--primary-light);
+    }
+
+    /* No-media slide: full-width text */
+    .slide.no-media .slide-content {
+      width: 100%;
+      min-width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 4rem 3rem;
+    }
+
+    .slide.no-media .slide-media {
+      display: none;
+    }
+
+    .slide.no-media .news-text {
+      font-size: 1.35rem;
+    }
+
+    /* Error state */
+    .error-screen {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--dark);
+      z-index: 1000;
+    }
+
+    .error-screen h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .error-screen p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .error-screen button {
+      padding: 0.65rem 1.5rem;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .error-screen button:hover {
+      background: var(--primary-light);
+    }
+  </style>
+</head>
+<body>
+  <div class="loading-screen" id="loading">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Loading impact updates...</div>
+  </div>
+
+  <div class="branding">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <div class="brand-text">sum<span>thing</span> Impact</div>
+  </div>
+
+  <div class="slide-counter" id="slideCounter"></div>
+
+  <div class="carousel" id="carousel"></div>
+
+  <div class="slide-indicators" id="indicators"></div>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <script>
+    const API_URL = 'https://sumthing-api.com/v2/news';
+    const SLIDE_DURATION = 10000; // 10 seconds for image/text slides
+    const GALLERY_INTERVAL = 3500; // rotate gallery images every 3.5s
+
+    let newsItems = [];
+    let currentIndex = 0;
+    let slideTimer = null;
+    let progressInterval = null;
+    let galleryIntervals = [];
+
+    // Fetch news items
+    async function fetchNews() {
+      const params = new URLSearchParams({
+        pageNumber: '1',
+        pageSize: '10'
+      });
+
+      const response = await fetch(`${API_URL}?${params}`);
+      if (!response.ok) throw new Error(`API error: ${response.status}`);
+
+      const result = await response.json();
+      return result.data || [];
+    }
+
+    // Format date
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+
+    // Get author initials
+    function getInitials(name) {
+      if (!name) return '?';
+      return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    }
+
+    // Check if news item has video
+    function hasVideo(item) {
+      return !!(item.youtubeEmbedId || (item.video && item.video.ref));
+    }
+
+    // Check if news item has images
+    function hasImages(item) {
+      return item.imageUrlGallery && item.imageUrlGallery.length > 0;
+    }
+
+    // Build slide HTML
+    function buildSlide(item, index) {
+      const slide = document.createElement('div');
+      slide.className = 'slide';
+      slide.dataset.index = index;
+
+      const hasMedia = hasVideo(item) || hasImages(item);
+      if (!hasMedia) slide.classList.add('no-media');
+
+      let mediaHTML = '';
+
+      if (hasVideo(item)) {
+        if (item.youtubeEmbedId) {
+          mediaHTML = `
+            <div class="slide-media">
+              <iframe
+                id="yt-${index}"
+                src="https://www.youtube.com/embed/${item.youtubeEmbedId}?autoplay=0&mute=1&controls=0&enablejsapi=1&rel=0&modestbranding=1"
+                allow="autoplay; encrypted-media"
+                allowfullscreen>
+              </iframe>
+              <div class="media-overlay"></div>
+            </div>`;
+        } else if (item.video && item.video.ref) {
+          mediaHTML = `
+            <div class="slide-media">
+              <video id="video-${index}" muted playsinline preload="metadata">
+                <source src="${item.video.ref}" type="video/mp4">
+              </video>
+              <div class="media-overlay"></div>
+            </div>`;
+        }
+      } else if (hasImages(item)) {
+        const images = item.imageUrlGallery;
+        if (images.length === 1) {
+          mediaHTML = `
+            <div class="slide-media">
+              <img src="${images[0]}" alt="News image" loading="lazy">
+              <div class="media-overlay"></div>
+            </div>`;
+        } else {
+          const imgsHTML = images.map((url, i) =>
+            `<img src="${url}" alt="News image ${i + 1}" class="${i === 0 ? 'gallery-active' : ''}" loading="lazy">`
+          ).join('');
+          mediaHTML = `
+            <div class="slide-media">
+              <div class="image-gallery" data-slide="${index}">
+                ${imgsHTML}
+              </div>
+              <div class="media-overlay"></div>
+            </div>`;
+        }
+      }
+
+      const authorAvatar = item.author && item.author.profileImageUrl
+        ? `<img class="author-avatar" src="${item.author.profileImageUrl}" alt="${item.author.username || 'Author'}">`
+        : `<div class="author-avatar-placeholder">${getInitials(item.author?.username)}</div>`;
+
+      const contentHTML = `
+        <div class="slide-content">
+          <div class="news-type-badge">${item.type || 'Impact Update'}</div>
+          <div class="author-row">
+            ${authorAvatar}
+            <div class="author-info">
+              <div class="author-name">${item.author?.username || 'Sumthing Team'}</div>
+              <div class="publish-date">${formatDate(item.publishedAt || item.createdAt)}</div>
+            </div>
+          </div>
+          <div class="news-text">${escapeHtml(item.text || '')}</div>
+        </div>`;
+
+      slide.innerHTML = mediaHTML + contentHTML;
+      return slide;
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Build indicators
+    function buildIndicators() {
+      const container = document.getElementById('indicators');
+      container.innerHTML = '';
+      newsItems.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'indicator' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', () => goToSlide(i));
+        container.appendChild(dot);
+      });
+    }
+
+    function updateIndicators() {
+      const dots = document.querySelectorAll('.indicator');
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentIndex);
+      });
+      document.getElementById('slideCounter').textContent =
+        `${currentIndex + 1} / ${newsItems.length}`;
+    }
+
+    // Progress bar
+    function startProgress(duration) {
+      const bar = document.getElementById('progressBar');
+      bar.style.transition = 'none';
+      bar.style.width = '0%';
+
+      // Force reflow
+      bar.offsetHeight;
+
+      bar.style.transition = `width ${duration}ms linear`;
+      bar.style.width = '100%';
+    }
+
+    function resetProgress() {
+      const bar = document.getElementById('progressBar');
+      bar.style.transition = 'none';
+      bar.style.width = '0%';
+    }
+
+    // Gallery rotation for multi-image slides
+    function startGalleryRotation(slideIndex) {
+      const gallery = document.querySelector(`.image-gallery[data-slide="${slideIndex}"]`);
+      if (!gallery) return;
+
+      const images = gallery.querySelectorAll('img');
+      if (images.length <= 1) return;
+
+      let current = 0;
+      const interval = setInterval(() => {
+        images[current].classList.remove('gallery-active');
+        current = (current + 1) % images.length;
+        images[current].classList.add('gallery-active');
+      }, GALLERY_INTERVAL);
+
+      galleryIntervals.push(interval);
+    }
+
+    function clearGalleryIntervals() {
+      galleryIntervals.forEach(clearInterval);
+      galleryIntervals = [];
+    }
+
+    // Video handling
+    function playVideoSlide(index) {
+      const item = newsItems[index];
+
+      if (item.youtubeEmbedId) {
+        const iframe = document.getElementById(`yt-${index}`);
+        if (iframe) {
+          // Use YouTube IFrame API to control playback
+          iframe.src = `https://www.youtube.com/embed/${item.youtubeEmbedId}?autoplay=1&mute=1&controls=0&enablejsapi=1&rel=0&modestbranding=1`;
+
+          // Since we can't easily detect YouTube video end without the API loaded,
+          // we'll set a generous timeout (60s) and also try to use postMessage
+          startProgress(60000);
+          slideTimer = setTimeout(() => nextSlide(), 60000);
+
+          // Listen for YouTube API messages
+          window.addEventListener('message', function onMsg(e) {
+            try {
+              const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+              if (data.event === 'onStateChange' && data.info === 0) {
+                window.removeEventListener('message', onMsg);
+                nextSlide();
+              }
+            } catch (_) {}
+          });
+        }
+        return true;
+      }
+
+      const video = document.getElementById(`video-${index}`);
+      if (video) {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+
+        video.onended = () => nextSlide();
+
+        // Also track duration for progress bar
+        video.onloadedmetadata = () => {
+          if (video.duration && isFinite(video.duration)) {
+            resetProgress();
+            startProgress(video.duration * 1000);
+          }
+        };
+
+        // Fallback timeout for video (5 minutes max)
+        slideTimer = setTimeout(() => nextSlide(), 300000);
+        return true;
+      }
+
+      return false;
+    }
+
+    function stopVideoSlide(index) {
+      const video = document.getElementById(`video-${index}`);
+      if (video) {
+        video.pause();
+        video.onended = null;
+      }
+
+      const iframe = document.getElementById(`yt-${index}`);
+      if (iframe) {
+        // Stop YouTube by removing autoplay
+        const item = newsItems[index];
+        if (item?.youtubeEmbedId) {
+          iframe.src = `https://www.youtube.com/embed/${item.youtubeEmbedId}?autoplay=0&mute=1&controls=0&rel=0&modestbranding=1`;
+        }
+      }
+    }
+
+    // Navigation
+    function goToSlide(index) {
+      if (index === currentIndex) return;
+
+      clearTimeout(slideTimer);
+      clearGalleryIntervals();
+      resetProgress();
+
+      const slides = document.querySelectorAll('.slide');
+      const currentSlide = slides[currentIndex];
+      const nextSlideEl = slides[index];
+
+      // Stop any playing media on current slide
+      stopVideoSlide(currentIndex);
+
+      // Animate out
+      currentSlide.classList.remove('active');
+      currentSlide.classList.add('exiting');
+
+      // Animate in
+      nextSlideEl.classList.add('active', 'entering');
+
+      setTimeout(() => {
+        currentSlide.classList.remove('exiting');
+        nextSlideEl.classList.remove('entering');
+      }, 800);
+
+      currentIndex = index;
+      updateIndicators();
+      startSlideTimer();
+    }
+
+    function nextSlide() {
+      const next = (currentIndex + 1) % newsItems.length;
+      goToSlide(next);
+    }
+
+    function startSlideTimer() {
+      clearTimeout(slideTimer);
+
+      const item = newsItems[currentIndex];
+
+      if (hasVideo(item)) {
+        const played = playVideoSlide(currentIndex);
+        if (played) return;
+      }
+
+      // Image gallery rotation
+      if (hasImages(item) && item.imageUrlGallery.length > 1) {
+        startGalleryRotation(currentIndex);
+      }
+
+      // Timed slide
+      startProgress(SLIDE_DURATION);
+      slideTimer = setTimeout(() => nextSlide(), SLIDE_DURATION);
+    }
+
+    // Initialize
+    async function init() {
+      try {
+        newsItems = await fetchNews();
+
+        if (!newsItems.length) {
+          showError('No news items found', 'The API returned no results.');
+          return;
+        }
+
+        const carousel = document.getElementById('carousel');
+        newsItems.forEach((item, i) => {
+          const slide = buildSlide(item, i);
+          if (i === 0) slide.classList.add('active');
+          carousel.appendChild(slide);
+        });
+
+        buildIndicators();
+        updateIndicators();
+
+        // Hide loading
+        document.getElementById('loading').classList.add('hidden');
+
+        // Start carousel
+        startSlideTimer();
+
+      } catch (err) {
+        console.error('Failed to load news:', err);
+        showError('Failed to load news', err.message);
+      }
+    }
+
+    function showError(title, message) {
+      document.getElementById('loading').classList.add('hidden');
+      const errDiv = document.createElement('div');
+      errDiv.className = 'error-screen';
+      errDiv.innerHTML = `
+        <h2>${title}</h2>
+        <p>${message}</p>
+        <button onclick="location.reload()">Try Again</button>`;
+      document.body.appendChild(errDiv);
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const prev = (currentIndex - 1 + newsItems.length) % newsItems.length;
+        goToSlide(prev);
+      }
+    });
+
+    init();
+  </script>
+</body>
+</html>
