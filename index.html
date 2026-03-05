@@ -78,11 +78,10 @@
       overflow: hidden;
     }
 
-    /* Individual slide */
+    /* Individual slide - fullscreen */
     .slide {
       position: absolute;
       inset: 0;
-      display: flex;
       opacity: 0;
       visibility: hidden;
       transition: none;
@@ -106,29 +105,29 @@
     @keyframes slideIn {
       from {
         opacity: 0;
-        transform: translateX(60px) scale(0.98);
+        transform: scale(1.02);
       }
       to {
         opacity: 1;
-        transform: translateX(0) scale(1);
+        transform: scale(1);
       }
     }
 
     @keyframes slideOut {
       from {
         opacity: 1;
-        transform: translateX(0) scale(1);
+        transform: scale(1);
       }
       to {
         opacity: 0;
-        transform: translateX(-60px) scale(0.98);
+        transform: scale(0.98);
       }
     }
 
-    /* Media section (left side) */
+    /* Media section - fullscreen background */
     .slide-media {
-      flex: 1;
-      position: relative;
+      position: absolute;
+      inset: 0;
       overflow: hidden;
       background: #000;
     }
@@ -158,23 +157,17 @@
       opacity: 1;
     }
 
-    .media-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to right, transparent 50%, var(--bg) 100%);
-      pointer-events: none;
-    }
-
     /* Gallery counter */
     .gallery-counter {
       position: absolute;
-      bottom: 16px;
-      left: 16px;
-      background: rgba(0, 0, 0, 0.6);
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(8px);
-      padding: 0.3rem 0.65rem;
+      padding: 0.3rem 0.75rem;
       border-radius: 6px;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       color: #fff;
       font-family: 'DM Sans', sans-serif;
       font-weight: 500;
@@ -189,30 +182,36 @@
       --media-object-fit: cover;
     }
 
-    /* Content section (right side) */
+    /* Bottom gradient overlay for text readability */
+    .slide-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(3, 53, 50, 0.95) 0%,
+        rgba(3, 53, 50, 0.85) 25%,
+        rgba(3, 53, 50, 0.4) 50%,
+        transparent 70%
+      );
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Content overlay - positioned at bottom */
     .slide-content {
-      width: 500px;
-      min-width: 500px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 4rem 2.5rem 3rem;
-      background: var(--bg);
-      position: relative;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 4;
+      padding: 0 3rem 4.5rem;
+      max-height: 65vh;
       overflow-y: auto;
+      scrollbar-width: none;
     }
 
     .slide-content::-webkit-scrollbar {
-      width: 4px;
-    }
-
-    .slide-content::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .slide-content::-webkit-scrollbar-thumb {
-      background: var(--highlight);
-      border-radius: 2px;
+      display: none;
     }
 
     .category-badge {
@@ -229,8 +228,9 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
       width: fit-content;
+      backdrop-filter: blur(8px);
     }
 
     .category-badge::before {
@@ -249,19 +249,20 @@
 
     .story-title {
       font-family: 'Oswald', sans-serif;
-      font-size: 1.5rem;
+      font-size: 2rem;
       font-weight: 700;
-      line-height: 1.3;
-      margin-bottom: 1.25rem;
+      line-height: 1.2;
+      margin-bottom: 1rem;
       color: var(--text);
       text-transform: uppercase;
+      max-width: 800px;
     }
 
     .partner-row {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
 
     .partner-logo {
@@ -271,6 +272,7 @@
       object-fit: cover;
       border: 2px solid var(--highlight);
       background: #fff;
+      flex-shrink: 0;
     }
 
     .partner-logo-placeholder {
@@ -308,23 +310,29 @@
 
     .news-text {
       font-family: 'DM Sans', sans-serif;
-      font-size: 1rem;
-      line-height: 1.75;
+      font-size: 1.05rem;
+      line-height: 1.7;
       color: var(--text);
-      margin-bottom: 1.5rem;
+      max-width: 800px;
       white-space: pre-wrap;
       word-wrap: break-word;
+      display: -webkit-box;
+      -webkit-line-clamp: 6;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .supporter-count {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: var(--text-muted);
-      margin-top: auto;
-      padding-top: 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 1rem;
+      padding: 0.4rem 0.85rem;
+      background: rgba(199, 245, 10, 0.1);
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
     }
 
     .supporter-count svg {
@@ -335,7 +343,7 @@
 
     .supporter-count strong {
       color: var(--highlight);
-      font-weight: 600;
+      font-weight: 700;
     }
 
     /* Progress bar */
@@ -411,54 +419,22 @@
       width: auto;
     }
 
-    /* Video-only slide: content overlays bottom */
-    .slide.video-slide .slide-content {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 500px;
-      min-width: 500px;
-      height: 100%;
-      background: linear-gradient(to left, var(--bg) 85%, transparent 100%);
-    }
-
-    .slide.video-slide .slide-media {
-      position: absolute;
-      inset: 0;
-    }
-
-    /* Bottom gradient for text readability over media */
-    .slide.video-slide .slide-content::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: -100px;
-      right: 0;
-      height: 60%;
-      background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    /* No-media slide: centered text */
+    /* No-media slide: colored background with centered text */
     .slide.no-media {
-      justify-content: center;
+      background: var(--bg);
     }
 
     .slide.no-media .slide-content {
-      width: 100%;
-      min-width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 4rem 3rem;
-    }
-
-    .slide.no-media .slide-media {
-      display: none;
+      max-height: 80vh;
     }
 
     .slide.no-media .news-text {
       font-size: 1.2rem;
+      -webkit-line-clamp: 10;
+    }
+
+    .slide.no-media .story-title {
+      font-size: 2.5rem;
     }
 
     /* Error state */
@@ -561,7 +537,7 @@
         try {
           const response = await fetchWithTimeout(url, FETCH_TIMEOUT);
           if (!response.ok) throw new Error(`API error: ${response.status}`);
-
+          return response;
         } catch (err) {
           console.warn(`Fetch attempt ${attempt}/${retries} failed:`, err.message);
           if (attempt === retries) throw err;
@@ -606,11 +582,11 @@
     }
 
     function hasVideo(item) {
-      return !!(item.video && item.video.playbackRef);
+      return !!(item.newsVideo && item.newsVideo.playbackRef);
     }
 
     function hasImages(item) {
-      return item.imageUrlGallery && item.imageUrlGallery.length > 0;
+      return item.newsImageUrls && item.newsImageUrls.length > 0;
     }
 
     function escapeHtml(text) {
@@ -629,7 +605,6 @@
       const hasMedia = itemHasVideo || itemHasImages;
 
       if (!hasMedia) slide.classList.add('no-media');
-      if (itemHasVideo) slide.classList.add('video-slide');
 
       let mediaHTML = '';
 
@@ -638,7 +613,7 @@
           <div class="slide-media">
             <mux-player
               id="mux-${index}"
-              playback-id="${item.video.playbackRef}"
+              playback-id="${item.newsVideo.playbackRef}"
               muted
               autoplay="false"
               preload="metadata"
@@ -646,12 +621,11 @@
             ></mux-player>
           </div>`;
       } else if (itemHasImages) {
-        const images = item.imageUrlGallery;
+        const images = item.newsImageUrls;
         if (images.length === 1) {
           mediaHTML = `
             <div class="slide-media">
               <img src="${images[0]}" alt="News image" loading="lazy">
-              <div class="media-overlay"></div>
             </div>`;
         } else {
           const imgsHTML = images.map((url, i) =>
@@ -663,32 +637,43 @@
                 ${imgsHTML}
               </div>
               <div class="gallery-counter" data-gallery-counter="${index}">1 / ${images.length}</div>
-              <div class="media-overlay"></div>
             </div>`;
         }
       }
 
-      const authorName = item.author ? item.author.username : 'Sumthing';
-      const authorLogo = item.author ? item.author.profileImageUrl : null;
+      const partnerName = item.projectPartnerName || 'Sumthing';
+      const partnerLogoUrl = item.projectPartnerLogoUrl || null;
+      const categoryLabel = item.projectCategory || 'Impact Update';
+      const storyTitle = item.storyTitle || '';
+      const supporterCount = item.storySupporterCount || 0;
 
-      const partnerAvatar = authorLogo
-        ? `<img class="partner-logo" src="${authorLogo}" alt="${escapeHtml(authorName)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="partner-logo-placeholder" style="display:none">${getInitials(authorName)}</div>`
-        : `<div class="partner-logo-placeholder">${getInitials(authorName)}</div>`;
+      const partnerAvatar = partnerLogoUrl
+        ? `<img class="partner-logo" src="${partnerLogoUrl}" alt="${escapeHtml(partnerName)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="partner-logo-placeholder" style="display:none">${getInitials(partnerName)}</div>`
+        : `<div class="partner-logo-placeholder">${getInitials(partnerName)}</div>`;
 
-      const categoryLabel = item.type || 'Impact Update';
+      const supporterHTML = supporterCount > 0
+        ? `<div class="supporter-count">
+            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            <strong>${supporterCount}</strong> supporters
+          </div>`
+        : '';
+
+      const overlayHTML = hasMedia ? '<div class="slide-overlay"></div>' : '';
 
       const contentHTML = `
+        ${overlayHTML}
         <div class="slide-content">
           <div class="category-badge">${escapeHtml(categoryLabel)}</div>
-          <div class="story-title">${escapeHtml(authorName)}</div>
+          <div class="story-title">${escapeHtml(storyTitle)}</div>
           <div class="partner-row">
             ${partnerAvatar}
             <div class="partner-info">
-              <div class="partner-name">${escapeHtml(authorName)}</div>
-              <div class="publish-date">${formatDate(item.publishedAt || item.createdAt)}</div>
+              <div class="partner-name">${escapeHtml(partnerName)}</div>
+              <div class="publish-date">${formatDate(item.newsPublishedAt || item.newsCreatedAt)}</div>
             </div>
           </div>
-          <div class="news-text">${escapeHtml(item.text || '')}</div>
+          <div class="news-text">${escapeHtml(item.newsText || '')}</div>
+          ${supporterHTML}
         </div>`;
 
       slide.innerHTML = mediaHTML + contentHTML;
@@ -769,7 +754,6 @@
       };
       player.addEventListener('ended', onEnded);
 
-      // Update progress bar when duration is known
       const onLoaded = () => {
         player.removeEventListener('loadedmetadata', onLoaded);
         if (player.duration && isFinite(player.duration)) {
@@ -778,7 +762,6 @@
         }
       };
       player.addEventListener('loadedmetadata', onLoaded);
-      // In case metadata is already loaded
       if (player.duration && isFinite(player.duration)) {
         resetProgress();
         startProgress(player.duration * 1000);
@@ -840,7 +823,7 @@
         if (played) return;
       }
 
-      if (hasImages(item) && item.imageUrlGallery.length > 1) {
+      if (hasImages(item) && item.newsImageUrls.length > 1) {
         startGalleryRotation(currentIndex);
       }
 
@@ -859,21 +842,18 @@
 
     async function init() {
       try {
-        // Step 1: Fetch projects (lightweight call)
         const projectIds = await fetchProjects();
         if (!projectIds.length) {
           showError('No projects found', 'The projects API returned no results.');
           return;
         }
 
-        // Step 2: Fetch initial small batch of news to show quickly
         const initialItems = await fetchNews(projectIds, INITIAL_PAGE_SIZE);
         if (!initialItems.length) {
           showError('No news items found', 'The API returned no results.');
           return;
         }
 
-        // Show initial slides immediately
         newsItems = initialItems;
         renderSlides(newsItems, 0);
         buildIndicators();
@@ -881,7 +861,6 @@
         document.getElementById('loading').classList.add('hidden');
         startSlideTimer();
 
-        // Step 3: Fetch full set in the background
         if (FULL_PAGE_SIZE > INITIAL_PAGE_SIZE) {
           fetchNews(projectIds, FULL_PAGE_SIZE).then(fullItems => {
             if (fullItems.length <= newsItems.length) return;
