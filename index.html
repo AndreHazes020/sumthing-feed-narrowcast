@@ -7,6 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@mux/mux-player@3/dist/mux-player.css">
+  <script defer src="https://unpkg.com/@mux/mux-player@3"></script>
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -152,7 +154,7 @@
       height: 100%;
       object-fit: cover;
       opacity: 0;
-      transition: opacity 1s ease;
+      transition: opacity 1.2s ease;
     }
 
     .slide-media .image-gallery img.gallery-active {
@@ -166,27 +168,37 @@
       pointer-events: none;
     }
 
-    /* Video styles */
-    .slide-media video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    /* Gallery counter */
+    .gallery-counter {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      padding: 0.3rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      color: #fff;
+      font-weight: 500;
+      z-index: 5;
     }
 
-    .slide-media iframe {
+    /* Video styles */
+    .slide-media mux-player {
       width: 100%;
       height: 100%;
-      border: none;
+      --controls: none;
+      --media-object-fit: cover;
     }
 
     /* Content section (right side) */
     .slide-content {
-      width: 480px;
-      min-width: 480px;
+      width: 500px;
+      min-width: 500px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 3rem 2.5rem;
+      padding: 4rem 2.5rem 3rem;
       background: var(--dark);
       position: relative;
       overflow-y: auto;
@@ -205,7 +217,7 @@
       border-radius: 2px;
     }
 
-    .news-type-badge {
+    .category-badge {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
@@ -218,10 +230,11 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
+      width: fit-content;
     }
 
-    .news-type-badge::before {
+    .category-badge::before {
       content: '';
       width: 6px;
       height: 6px;
@@ -235,22 +248,31 @@
       50% { opacity: 0.4; }
     }
 
-    .author-row {
+    .story-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 1.25rem;
+      color: var(--text);
+    }
+
+    .partner-row {
       display: flex;
       align-items: center;
       gap: 0.75rem;
       margin-bottom: 1.5rem;
     }
 
-    .author-avatar {
+    .partner-logo {
       width: 44px;
       height: 44px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--primary);
+      background: #fff;
     }
 
-    .author-avatar-placeholder {
+    .partner-logo-placeholder {
       width: 44px;
       height: 44px;
       border-radius: 50%;
@@ -262,14 +284,15 @@
       font-size: 1rem;
       color: #fff;
       border: 2px solid var(--primary);
+      flex-shrink: 0;
     }
 
-    .author-info {
+    .partner-info {
       display: flex;
       flex-direction: column;
     }
 
-    .author-name {
+    .partner-name {
       font-weight: 600;
       font-size: 0.95rem;
       color: var(--text);
@@ -282,12 +305,34 @@
     }
 
     .news-text {
-      font-size: 1.05rem;
-      line-height: 1.7;
+      font-size: 1rem;
+      line-height: 1.75;
       color: var(--text);
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       white-space: pre-wrap;
       word-wrap: break-word;
+    }
+
+    .supporter-count {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .supporter-count svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--primary-light);
+    }
+
+    .supporter-count strong {
+      color: var(--primary-light);
+      font-weight: 600;
     }
 
     /* Progress bar */
@@ -383,7 +428,27 @@
       color: var(--primary-light);
     }
 
-    /* No-media slide: full-width text */
+    /* Video-only slide: content overlays bottom */
+    .slide.video-slide .slide-content {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 500px;
+      min-width: 500px;
+      height: 100%;
+      background: linear-gradient(to left, var(--dark) 85%, transparent 100%);
+    }
+
+    .slide.video-slide .slide-media {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* No-media slide: centered text */
+    .slide.no-media {
+      justify-content: center;
+    }
+
     .slide.no-media .slide-content {
       width: 100%;
       min-width: 100%;
@@ -397,7 +462,7 @@
     }
 
     .slide.no-media .news-text {
-      font-size: 1.35rem;
+      font-size: 1.2rem;
     }
 
     /* Error state */
@@ -464,16 +529,14 @@
 
   <script>
     const API_URL = 'https://sumthing-api.com/v2/news';
-    const SLIDE_DURATION = 10000; // 10 seconds for image/text slides
-    const GALLERY_INTERVAL = 3500; // rotate gallery images every 3.5s
+    const SLIDE_DURATION = 10000;
+    const GALLERY_INTERVAL = 3500;
 
     let newsItems = [];
     let currentIndex = 0;
     let slideTimer = null;
-    let progressInterval = null;
     let galleryIntervals = [];
 
-    // Fetch news items
     async function fetchNews() {
       const params = new URLSearchParams({
         pageNumber: '1',
@@ -487,7 +550,6 @@
       return result.data || [];
     }
 
-    // Format date
     function formatDate(dateStr) {
       if (!dateStr) return '';
       const date = new Date(dateStr);
@@ -498,95 +560,21 @@
       });
     }
 
-    // Get author initials
     function getInitials(name) {
       if (!name) return '?';
       return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
     }
 
-    // Check if news item has video
     function hasVideo(item) {
-      return !!(item.youtubeEmbedId || (item.video && item.video.ref));
+      return !!(item.newsVideo && item.newsVideo.playbackRef);
     }
 
-    // Check if news item has images
     function hasImages(item) {
-      return item.imageUrlGallery && item.imageUrlGallery.length > 0;
+      return item.newsImageUrls && item.newsImageUrls.length > 0;
     }
 
-    // Build slide HTML
-    function buildSlide(item, index) {
-      const slide = document.createElement('div');
-      slide.className = 'slide';
-      slide.dataset.index = index;
-
-      const hasMedia = hasVideo(item) || hasImages(item);
-      if (!hasMedia) slide.classList.add('no-media');
-
-      let mediaHTML = '';
-
-      if (hasVideo(item)) {
-        if (item.youtubeEmbedId) {
-          mediaHTML = `
-            <div class="slide-media">
-              <iframe
-                id="yt-${index}"
-                src="https://www.youtube.com/embed/${item.youtubeEmbedId}?autoplay=0&mute=1&controls=0&enablejsapi=1&rel=0&modestbranding=1"
-                allow="autoplay; encrypted-media"
-                allowfullscreen>
-              </iframe>
-              <div class="media-overlay"></div>
-            </div>`;
-        } else if (item.video && item.video.ref) {
-          mediaHTML = `
-            <div class="slide-media">
-              <video id="video-${index}" muted playsinline preload="metadata">
-                <source src="${item.video.ref}" type="video/mp4">
-              </video>
-              <div class="media-overlay"></div>
-            </div>`;
-        }
-      } else if (hasImages(item)) {
-        const images = item.imageUrlGallery;
-        if (images.length === 1) {
-          mediaHTML = `
-            <div class="slide-media">
-              <img src="${images[0]}" alt="News image" loading="lazy">
-              <div class="media-overlay"></div>
-            </div>`;
-        } else {
-          const imgsHTML = images.map((url, i) =>
-            `<img src="${url}" alt="News image ${i + 1}" class="${i === 0 ? 'gallery-active' : ''}" loading="lazy">`
-          ).join('');
-          mediaHTML = `
-            <div class="slide-media">
-              <div class="image-gallery" data-slide="${index}">
-                ${imgsHTML}
-              </div>
-              <div class="media-overlay"></div>
-            </div>`;
-        }
-      }
-
-      const authorAvatar = item.author && item.author.profileImageUrl
-        ? `<img class="author-avatar" src="${item.author.profileImageUrl}" alt="${item.author.username || 'Author'}">`
-        : `<div class="author-avatar-placeholder">${getInitials(item.author?.username)}</div>`;
-
-      const contentHTML = `
-        <div class="slide-content">
-          <div class="news-type-badge">${item.type || 'Impact Update'}</div>
-          <div class="author-row">
-            ${authorAvatar}
-            <div class="author-info">
-              <div class="author-name">${item.author?.username || 'Sumthing Team'}</div>
-              <div class="publish-date">${formatDate(item.publishedAt || item.createdAt)}</div>
-            </div>
-          </div>
-          <div class="news-text">${escapeHtml(item.text || '')}</div>
-        </div>`;
-
-      slide.innerHTML = mediaHTML + contentHTML;
-      return slide;
+    function getLargeImageUrl(url) {
+      return url + '-large';
     }
 
     function escapeHtml(text) {
@@ -595,7 +583,85 @@
       return div.innerHTML;
     }
 
-    // Build indicators
+    function buildSlide(item, index) {
+      const slide = document.createElement('div');
+      slide.className = 'slide';
+      slide.dataset.index = index;
+
+      const itemHasVideo = hasVideo(item);
+      const itemHasImages = hasImages(item);
+      const hasMedia = itemHasVideo || itemHasImages;
+
+      if (!hasMedia) slide.classList.add('no-media');
+      if (itemHasVideo) slide.classList.add('video-slide');
+
+      let mediaHTML = '';
+
+      if (itemHasVideo) {
+        mediaHTML = `
+          <div class="slide-media">
+            <mux-player
+              id="mux-${index}"
+              playback-id="${item.newsVideo.playbackRef}"
+              muted
+              autoplay="false"
+              preload="metadata"
+              style="width:100%;height:100%;--controls:none;--media-object-fit:cover;"
+            ></mux-player>
+          </div>`;
+      } else if (itemHasImages) {
+        const images = item.newsImageUrls;
+        if (images.length === 1) {
+          mediaHTML = `
+            <div class="slide-media">
+              <img src="${getLargeImageUrl(images[0])}" alt="News image" loading="lazy">
+              <div class="media-overlay"></div>
+            </div>`;
+        } else {
+          const imgsHTML = images.map((url, i) =>
+            `<img src="${getLargeImageUrl(url)}" alt="News image ${i + 1}" class="${i === 0 ? 'gallery-active' : ''}" loading="lazy">`
+          ).join('');
+          mediaHTML = `
+            <div class="slide-media">
+              <div class="image-gallery" data-slide="${index}">
+                ${imgsHTML}
+              </div>
+              <div class="gallery-counter" data-gallery-counter="${index}">1 / ${images.length}</div>
+              <div class="media-overlay"></div>
+            </div>`;
+        }
+      }
+
+      const partnerAvatar = item.projectPartnerLogoUrl
+        ? `<img class="partner-logo" src="${item.projectPartnerLogoUrl}" alt="${escapeHtml(item.projectPartnerName || '')}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="partner-logo-placeholder" style="display:none">${getInitials(item.projectPartnerName)}</div>`
+        : `<div class="partner-logo-placeholder">${getInitials(item.projectPartnerName)}</div>`;
+
+      const categoryLabel = item.projectCategory || 'Impact Update';
+      const supporterCount = item.storySupporterCount || 0;
+
+      const contentHTML = `
+        <div class="slide-content">
+          <div class="category-badge">${escapeHtml(categoryLabel)}</div>
+          ${item.storyTitle ? `<div class="story-title">${escapeHtml(item.storyTitle)}</div>` : ''}
+          <div class="partner-row">
+            ${partnerAvatar}
+            <div class="partner-info">
+              <div class="partner-name">${escapeHtml(item.projectPartnerName || 'Sumthing')}</div>
+              <div class="publish-date">${formatDate(item.newsPublishedAt || item.newsCreatedAt)}</div>
+            </div>
+          </div>
+          <div class="news-text">${escapeHtml(item.newsText || '')}</div>
+          ${supporterCount > 0 ? `
+          <div class="supporter-count">
+            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            <strong>${supporterCount}</strong> supporters in this story
+          </div>` : ''}
+        </div>`;
+
+      slide.innerHTML = mediaHTML + contentHTML;
+      return slide;
+    }
+
     function buildIndicators() {
       const container = document.getElementById('indicators');
       container.innerHTML = '';
@@ -616,15 +682,11 @@
         `${currentIndex + 1} / ${newsItems.length}`;
     }
 
-    // Progress bar
     function startProgress(duration) {
       const bar = document.getElementById('progressBar');
       bar.style.transition = 'none';
       bar.style.width = '0%';
-
-      // Force reflow
-      bar.offsetHeight;
-
+      bar.offsetHeight; // force reflow
       bar.style.transition = `width ${duration}ms linear`;
       bar.style.width = '100%';
     }
@@ -635,7 +697,6 @@
       bar.style.width = '0%';
     }
 
-    // Gallery rotation for multi-image slides
     function startGalleryRotation(slideIndex) {
       const gallery = document.querySelector(`.image-gallery[data-slide="${slideIndex}"]`);
       if (!gallery) return;
@@ -643,11 +704,14 @@
       const images = gallery.querySelectorAll('img');
       if (images.length <= 1) return;
 
+      const counter = document.querySelector(`[data-gallery-counter="${slideIndex}"]`);
       let current = 0;
+
       const interval = setInterval(() => {
         images[current].classList.remove('gallery-active');
         current = (current + 1) % images.length;
         images[current].classList.add('gallery-active');
+        if (counter) counter.textContent = `${current + 1} / ${images.length}`;
       }, GALLERY_INTERVAL);
 
       galleryIntervals.push(interval);
@@ -658,76 +722,47 @@
       galleryIntervals = [];
     }
 
-    // Video handling
     function playVideoSlide(index) {
-      const item = newsItems[index];
+      const player = document.getElementById(`mux-${index}`);
+      if (!player) return false;
 
-      if (item.youtubeEmbedId) {
-        const iframe = document.getElementById(`yt-${index}`);
-        if (iframe) {
-          // Use YouTube IFrame API to control playback
-          iframe.src = `https://www.youtube.com/embed/${item.youtubeEmbedId}?autoplay=1&mute=1&controls=0&enablejsapi=1&rel=0&modestbranding=1`;
+      player.muted = true;
+      player.currentTime = 0;
+      player.play().catch(() => {});
 
-          // Since we can't easily detect YouTube video end without the API loaded,
-          // we'll set a generous timeout (60s) and also try to use postMessage
-          startProgress(60000);
-          slideTimer = setTimeout(() => nextSlide(), 60000);
+      const onEnded = () => {
+        player.removeEventListener('ended', onEnded);
+        nextSlide();
+      };
+      player.addEventListener('ended', onEnded);
 
-          // Listen for YouTube API messages
-          window.addEventListener('message', function onMsg(e) {
-            try {
-              const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
-              if (data.event === 'onStateChange' && data.info === 0) {
-                window.removeEventListener('message', onMsg);
-                nextSlide();
-              }
-            } catch (_) {}
-          });
+      // Update progress bar when duration is known
+      const onLoaded = () => {
+        player.removeEventListener('loadedmetadata', onLoaded);
+        if (player.duration && isFinite(player.duration)) {
+          resetProgress();
+          startProgress(player.duration * 1000);
         }
-        return true;
+      };
+      player.addEventListener('loadedmetadata', onLoaded);
+      // In case metadata is already loaded
+      if (player.duration && isFinite(player.duration)) {
+        resetProgress();
+        startProgress(player.duration * 1000);
       }
 
-      const video = document.getElementById(`video-${index}`);
-      if (video) {
-        video.currentTime = 0;
-        video.play().catch(() => {});
-
-        video.onended = () => nextSlide();
-
-        // Also track duration for progress bar
-        video.onloadedmetadata = () => {
-          if (video.duration && isFinite(video.duration)) {
-            resetProgress();
-            startProgress(video.duration * 1000);
-          }
-        };
-
-        // Fallback timeout for video (5 minutes max)
-        slideTimer = setTimeout(() => nextSlide(), 300000);
-        return true;
-      }
-
-      return false;
+      // Fallback: 5 minute max for any video
+      slideTimer = setTimeout(() => nextSlide(), 300000);
+      return true;
     }
 
     function stopVideoSlide(index) {
-      const video = document.getElementById(`video-${index}`);
-      if (video) {
-        video.pause();
-        video.onended = null;
-      }
-
-      const iframe = document.getElementById(`yt-${index}`);
-      if (iframe) {
-        // Stop YouTube by removing autoplay
-        const item = newsItems[index];
-        if (item?.youtubeEmbedId) {
-          iframe.src = `https://www.youtube.com/embed/${item.youtubeEmbedId}?autoplay=0&mute=1&controls=0&rel=0&modestbranding=1`;
-        }
+      const player = document.getElementById(`mux-${index}`);
+      if (player) {
+        player.pause();
       }
     }
 
-    // Navigation
     function goToSlide(index) {
       if (index === currentIndex) return;
 
@@ -739,14 +774,11 @@
       const currentSlide = slides[currentIndex];
       const nextSlideEl = slides[index];
 
-      // Stop any playing media on current slide
       stopVideoSlide(currentIndex);
 
-      // Animate out
       currentSlide.classList.remove('active');
       currentSlide.classList.add('exiting');
 
-      // Animate in
       nextSlideEl.classList.add('active', 'entering');
 
       setTimeout(() => {
@@ -760,6 +792,7 @@
     }
 
     function nextSlide() {
+      clearTimeout(slideTimer);
       const next = (currentIndex + 1) % newsItems.length;
       goToSlide(next);
     }
@@ -774,17 +807,14 @@
         if (played) return;
       }
 
-      // Image gallery rotation
-      if (hasImages(item) && item.imageUrlGallery.length > 1) {
+      if (hasImages(item) && item.newsImageUrls.length > 1) {
         startGalleryRotation(currentIndex);
       }
 
-      // Timed slide
       startProgress(SLIDE_DURATION);
       slideTimer = setTimeout(() => nextSlide(), SLIDE_DURATION);
     }
 
-    // Initialize
     async function init() {
       try {
         newsItems = await fetchNews();
@@ -804,10 +834,7 @@
         buildIndicators();
         updateIndicators();
 
-        // Hide loading
         document.getElementById('loading').classList.add('hidden');
-
-        // Start carousel
         startSlideTimer();
 
       } catch (err) {
@@ -821,13 +848,12 @@
       const errDiv = document.createElement('div');
       errDiv.className = 'error-screen';
       errDiv.innerHTML = `
-        <h2>${title}</h2>
-        <p>${message}</p>
+        <h2>${escapeHtml(title)}</h2>
+        <p>${escapeHtml(message)}</p>
         <button onclick="location.reload()">Try Again</button>`;
       document.body.appendChild(errDiv);
     }
 
-    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowRight' || e.key === ' ') {
         e.preventDefault();
