@@ -606,15 +606,11 @@
     }
 
     function hasVideo(item) {
-      return !!(item.newsVideo && item.newsVideo.playbackRef);
+      return !!(item.video && item.video.playbackRef);
     }
 
     function hasImages(item) {
-      return item.newsImageUrls && item.newsImageUrls.length > 0;
-    }
-
-    function getLargeImageUrl(url) {
-      return url + '-large';
+      return item.imageUrlGallery && item.imageUrlGallery.length > 0;
     }
 
     function escapeHtml(text) {
@@ -642,7 +638,7 @@
           <div class="slide-media">
             <mux-player
               id="mux-${index}"
-              playback-id="${item.newsVideo.playbackRef}"
+              playback-id="${item.video.playbackRef}"
               muted
               autoplay="false"
               preload="metadata"
@@ -650,16 +646,16 @@
             ></mux-player>
           </div>`;
       } else if (itemHasImages) {
-        const images = item.newsImageUrls;
+        const images = item.imageUrlGallery;
         if (images.length === 1) {
           mediaHTML = `
             <div class="slide-media">
-              <img src="${getLargeImageUrl(images[0])}" alt="News image" loading="lazy">
+              <img src="${images[0]}" alt="News image" loading="lazy">
               <div class="media-overlay"></div>
             </div>`;
         } else {
           const imgsHTML = images.map((url, i) =>
-            `<img src="${getLargeImageUrl(url)}" alt="News image ${i + 1}" class="${i === 0 ? 'gallery-active' : ''}" loading="lazy">`
+            `<img src="${url}" alt="News image ${i + 1}" class="${i === 0 ? 'gallery-active' : ''}" loading="lazy">`
           ).join('');
           mediaHTML = `
             <div class="slide-media">
@@ -672,30 +668,27 @@
         }
       }
 
-      const partnerAvatar = item.projectPartnerLogoUrl
-        ? `<img class="partner-logo" src="${item.projectPartnerLogoUrl}" alt="${escapeHtml(item.projectPartnerName || '')}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="partner-logo-placeholder" style="display:none">${getInitials(item.projectPartnerName)}</div>`
-        : `<div class="partner-logo-placeholder">${getInitials(item.projectPartnerName)}</div>`;
+      const authorName = item.author ? item.author.username : 'Sumthing';
+      const authorLogo = item.author ? item.author.profileImageUrl : null;
 
-      const categoryLabel = item.projectCategory || 'Impact Update';
-      const supporterCount = item.storySupporterCount || 0;
+      const partnerAvatar = authorLogo
+        ? `<img class="partner-logo" src="${authorLogo}" alt="${escapeHtml(authorName)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="partner-logo-placeholder" style="display:none">${getInitials(authorName)}</div>`
+        : `<div class="partner-logo-placeholder">${getInitials(authorName)}</div>`;
+
+      const categoryLabel = item.type || 'Impact Update';
 
       const contentHTML = `
         <div class="slide-content">
           <div class="category-badge">${escapeHtml(categoryLabel)}</div>
-          ${item.storyTitle ? `<div class="story-title">${escapeHtml(item.storyTitle)}</div>` : ''}
+          <div class="story-title">${escapeHtml(authorName)}</div>
           <div class="partner-row">
             ${partnerAvatar}
             <div class="partner-info">
-              <div class="partner-name">${escapeHtml(item.projectPartnerName || 'Sumthing')}</div>
-              <div class="publish-date">${formatDate(item.newsPublishedAt || item.newsCreatedAt)}</div>
+              <div class="partner-name">${escapeHtml(authorName)}</div>
+              <div class="publish-date">${formatDate(item.publishedAt || item.createdAt)}</div>
             </div>
           </div>
-          <div class="news-text">${escapeHtml(item.newsText || '')}</div>
-          ${supporterCount > 0 ? `
-          <div class="supporter-count">
-            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-            <strong>${supporterCount}</strong> supporters in this story
-          </div>` : ''}
+          <div class="news-text">${escapeHtml(item.text || '')}</div>
         </div>`;
 
       slide.innerHTML = mediaHTML + contentHTML;
@@ -847,7 +840,7 @@
         if (played) return;
       }
 
-      if (hasImages(item) && item.newsImageUrls.length > 1) {
+      if (hasImages(item) && item.imageUrlGallery.length > 1) {
         startGalleryRotation(currentIndex);
       }
 
