@@ -542,47 +542,15 @@
   </div>
 
   <script>
-    const API_URL = 'https://sumthing-api.com/v1/stories/news';
+    const API_BASE = 'https://sumthing-api.com';
+    const PROJECTS_URL = `${API_BASE}/v3/projects`;
+    const NEWS_URL = `${API_BASE}/v1/stories/news`;
     const SLIDE_DURATION = 10000;
     const GALLERY_INTERVAL = 3500;
-    const FETCH_TIMEOUT = 45000;
+    const FETCH_TIMEOUT = 30000;
     const MAX_RETRIES = 3;
-
-    const PROJECT_IDS = [
-      'c7d0d180-eaac-43da-988f-54d0c6d454d7',
-      '396f2b43-d3b1-42c6-81c0-b6371c41e70d',
-      'f71adf9e-2fc6-405c-bf10-07924bc8f4d3',
-      'a7c9b23e-3f7a-4e85-9f82-14dc1cbeb32d',
-      '9f5fb85a-84c5-4139-a6d5-a39f1157ce67',
-      'e975ec86-4ac7-413c-8383-40e1dcf9e530',
-      '4851c674-11e2-4675-8e86-00a7624327c8',
-      '020b3971-8cc3-4c64-b82f-38bd8f11bf8e',
-      '016b3971-8cc3-4c64-b82f-38bd8f11bf8e',
-      '777b3971-8cc3-4c64-b82f-38bd8f11bf8e',
-      'e44e2f63-8b5d-4e13-ac3d-acdccc446e4a',
-      '3214c875-bc90-448d-aba7-6c49431705f1',
-      'f47ac10b-58cc-4372-a567-0e02b2c3d479',
-      'cbe61494-b68a-47b5-9581-63dc2365445a',
-      '4fa7e278-413b-41d2-a707-8e5f8e3c631e',
-      '606434ff-1cef-4880-9c2a-bbdcf1ce47d8',
-      'e2653d26-9071-47af-9067-4ffb1d3bd063',
-      '3e21b0be-d9fd-4102-8d82-c232bfac1159',
-      '857e25bc-d091-4a8e-a96e-8c418d09c5a9',
-      '3505dc0e-00d3-47c2-bb71-5f29926cff86',
-      '1792aa64-949f-4171-9bfd-97a161e75df6',
-      '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      '55ae848d-39ca-48f4-b35f-ed328f6ec192',
-      'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
-      '94585c86-3ccb-4711-8a2f-a3170dc9452f',
-      '020125d8-1aea-4080-9bf3-4c8c8affa37b',
-      'c8b8e2d2-58f9-11ee-8c99-0242ac120002',
-      '4c469820-2c01-4684-bd6e-39c0a80b90b6',
-      '4fbc317a-5ada-43ba-b0dc-e588433fccb8',
-      '2a7569f1-7307-4f31-bc19-23505f54d6c0',
-      '0158b21e-bf74-434e-bedc-6250ef11940b',
-      '1d269ebe-e053-494a-bbbf-f7372d2602a0',
-      '72311cbb-e04f-4f94-9869-60657bfe4b8a'
-    ];
+    const INITIAL_PAGE_SIZE = 6;
+    const FULL_PAGE_SIZE = 24;
 
     let newsItems = [];
     let currentIndex = 0;
@@ -605,28 +573,38 @@
       }
     }
 
-    async function fetchNews(retries = MAX_RETRIES) {
-      const params = new URLSearchParams({
-        pageNumber: '1',
-        pageSize: '24',
-        sampling: 'true',
-        withSupporters: 'true'
-      });
-      PROJECT_IDS.forEach(id => params.append('projectIds', id));
-
+    async function fetchWithRetry(url, retries = MAX_RETRIES) {
       for (let attempt = 1; attempt <= retries; attempt++) {
         try {
-          const response = await fetchWithTimeout(`${API_URL}?${params}`, FETCH_TIMEOUT);
+          const response = await fetchWithTimeout(url, FETCH_TIMEOUT);
           if (!response.ok) throw new Error(`API error: ${response.status}`);
-
-          const result = await response.json();
-          return result.data || [];
+          return response;
         } catch (err) {
           console.warn(`Fetch attempt ${attempt}/${retries} failed:`, err.message);
           if (attempt === retries) throw err;
           await new Promise(r => setTimeout(r, 2000 * attempt));
         }
       }
+    }
+
+    async function fetchProjects() {
+      const response = await fetchWithRetry(PROJECTS_URL);
+      const projects = await response.json();
+      return projects.map(p => p.id);
+    }
+
+    async function fetchNews(projectIds, pageSize = FULL_PAGE_SIZE) {
+      const params = new URLSearchParams({
+        pageNumber: '1',
+        pageSize: String(pageSize),
+        sampling: 'true',
+        withSupporters: 'true'
+      });
+      projectIds.forEach(id => params.append('projectIds', id));
+
+      const response = await fetchWithRetry(`${NEWS_URL}?${params}`);
+      const result = await response.json();
+      return result.data || [];
     }
 
     function formatDate(dateStr) {
@@ -887,27 +865,55 @@
       slideTimer = setTimeout(() => nextSlide(), SLIDE_DURATION);
     }
 
+    function renderSlides(items, startIndex) {
+      const carousel = document.getElementById('carousel');
+      items.forEach((item, i) => {
+        const slide = buildSlide(item, startIndex + i);
+        if (startIndex === 0 && i === 0) slide.classList.add('active');
+        carousel.appendChild(slide);
+      });
+    }
+
     async function init() {
       try {
-        newsItems = await fetchNews();
+        // Step 1: Fetch projects (lightweight call)
+        const projectIds = await fetchProjects();
+        if (!projectIds.length) {
+          showError('No projects found', 'The projects API returned no results.');
+          return;
+        }
 
-        if (!newsItems.length) {
+        // Step 2: Fetch initial small batch of news to show quickly
+        const initialItems = await fetchNews(projectIds, INITIAL_PAGE_SIZE);
+        if (!initialItems.length) {
           showError('No news items found', 'The API returned no results.');
           return;
         }
 
-        const carousel = document.getElementById('carousel');
-        newsItems.forEach((item, i) => {
-          const slide = buildSlide(item, i);
-          if (i === 0) slide.classList.add('active');
-          carousel.appendChild(slide);
-        });
-
+        // Show initial slides immediately
+        newsItems = initialItems;
+        renderSlides(newsItems, 0);
         buildIndicators();
         updateIndicators();
-
         document.getElementById('loading').classList.add('hidden');
         startSlideTimer();
+
+        // Step 3: Fetch full set in the background
+        if (FULL_PAGE_SIZE > INITIAL_PAGE_SIZE) {
+          fetchNews(projectIds, FULL_PAGE_SIZE).then(fullItems => {
+            if (fullItems.length <= newsItems.length) return;
+
+            const newItems = fullItems.slice(newsItems.length);
+            const startIndex = newsItems.length;
+            newsItems = fullItems;
+            renderSlides(newItems, startIndex);
+            buildIndicators();
+            updateIndicators();
+            console.log(`Loaded ${newItems.length} additional slides in background`);
+          }).catch(err => {
+            console.warn('Background fetch for more news failed:', err.message);
+          });
+        }
 
       } catch (err) {
         console.error('Failed to load news:', err);
