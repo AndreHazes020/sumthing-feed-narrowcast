@@ -179,7 +179,7 @@
       width: 100%;
       height: 100%;
       --controls: none;
-      --media-object-fit: cover;
+      --media-object-fit: contain;
     }
 
     /* Bottom gradient overlay for text readability */
@@ -654,7 +654,7 @@
               autoplay="false"
               preload="auto"
               max-resolution="2160p"
-              style="width:100%;height:100%;--controls:none;--media-object-fit:cover;"
+              style="width:100%;height:100%;--controls:none;--media-object-fit:contain;"
             ></mux-player>
           </div>`;
       } else if (itemHasImages) {
@@ -881,6 +881,12 @@
 
       if (hasImages(item) && item.newsImageUrls.length > 1) {
         startGalleryRotation(currentIndex);
+        // Give enough time to show every image in the gallery
+        const imageCount = item.newsImageUrls.length;
+        const galleryDuration = imageCount * GALLERY_INTERVAL + GALLERY_INTERVAL;
+        startProgress(galleryDuration);
+        slideTimer = setTimeout(() => nextSlide(), galleryDuration);
+        return;
       }
 
       startProgress(SLIDE_DURATION);
