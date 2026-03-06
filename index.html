@@ -224,7 +224,7 @@
       100% { opacity: 0; transform: translateY(100%); }
     }
 
-    .slide-content.video-text-hide ~ .slide-overlay {
+    .slide-overlay.video-overlay-hide {
       animation: fadeOverlay 1s ease-in forwards;
     }
 
@@ -698,7 +698,6 @@
       const overlayHTML = hasMedia ? '<div class="slide-overlay"></div>' : '';
 
       const contentHTML = `
-        ${overlayHTML}
         <div class="slide-content">
           <div class="category-badge">${escapeHtml(categoryLabel)}</div>
           <div class="story-title">${escapeHtml(storyTitle)}</div>
@@ -711,7 +710,8 @@
           </div>
           <div class="news-text">${escapeHtml(item.newsText || '')}</div>
           ${supporterHTML}
-        </div>`;
+        </div>
+        ${overlayHTML}`;
 
       slide.innerHTML = mediaHTML + contentHTML;
       return slide;
@@ -785,13 +785,15 @@
       player.currentTime = 0;
       player.play().catch(() => {});
 
-      // Hide text overlay after 6 seconds on video slides
+      // Hide text overlay and dark fade after 6 seconds on video slides
       const slide = player.closest('.slide');
       const content = slide ? slide.querySelector('.slide-content') : null;
+      const overlay = slide ? slide.querySelector('.slide-overlay') : null;
       if (content) {
         clearTimeout(videoTextTimer);
         videoTextTimer = setTimeout(() => {
           content.classList.add('video-text-hide');
+          if (overlay) overlay.classList.add('video-overlay-hide');
         }, 6000);
       }
 
@@ -840,9 +842,11 @@
 
       stopVideoSlide(currentIndex);
 
-      // Reset video text hide on current slide
+      // Reset video text hide and overlay fade on current slide
       const currentContent = currentSlide.querySelector('.slide-content');
       if (currentContent) currentContent.classList.remove('video-text-hide');
+      const currentOverlay = currentSlide.querySelector('.slide-overlay');
+      if (currentOverlay) currentOverlay.classList.remove('video-overlay-hide');
 
       currentSlide.classList.remove('active');
       currentSlide.classList.add('exiting');
