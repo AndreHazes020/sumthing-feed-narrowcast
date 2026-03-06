@@ -175,17 +175,11 @@
     }
 
     /* Video styles */
-    .slide-media .video-bg {
-      position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center;
-      filter: blur(40px) brightness(0.5);
-      transform: scale(1.2);
+    .slide-media.video-media {
+      background: radial-gradient(ellipse at center, #1a2a28 0%, #0a1210 100%);
     }
 
     .slide-media mux-player {
-      position: relative;
       width: 100%;
       height: 100%;
       --controls: none;
@@ -655,10 +649,8 @@
       let mediaHTML = '';
 
       if (itemHasVideo) {
-        const thumbUrl = `https://image.mux.com/${item.newsVideo.playbackRef}/thumbnail.jpg?width=480&fit_mode=smartcrop`;
         mediaHTML = `
-          <div class="slide-media">
-            <div class="video-bg" style="background-image:url('${thumbUrl}')"></div>
+          <div class="slide-media video-media">
             <mux-player
               id="mux-${index}"
               playback-id="${item.newsVideo.playbackRef}"
