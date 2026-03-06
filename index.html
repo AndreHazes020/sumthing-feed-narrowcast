@@ -176,14 +176,32 @@
 
     /* Video styles */
     .slide-media.video-media {
-      background: radial-gradient(ellipse at center, #1a2a28 0%, #0a1210 100%);
+      background: #000;
+    }
+
+    .video-blur-bg {
+      position: absolute;
+      inset: 0;
+      filter: blur(40px) brightness(0.5);
+      transform: scale(1.2);
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .video-blur-bg mux-player {
+      width: 100%;
+      height: 100%;
+      --controls: none;
+      --media-object-fit: cover;
     }
 
     .slide-media mux-player {
+      position: relative;
       width: 100%;
       height: 100%;
       --controls: none;
       --media-object-fit: contain;
+      z-index: 1;
     }
 
     /* Bottom gradient overlay for text readability */
@@ -651,6 +669,16 @@
       if (itemHasVideo) {
         mediaHTML = `
           <div class="slide-media video-media">
+            <div class="video-blur-bg">
+              <mux-player
+                id="mux-bg-${index}"
+                playback-id="${item.newsVideo.playbackRef}"
+                muted
+                autoplay="false"
+                preload="auto"
+                style="width:100%;height:100%;--controls:none;--media-object-fit:cover;"
+              ></mux-player>
+            </div>
             <mux-player
               id="mux-${index}"
               playback-id="${item.newsVideo.playbackRef}"
@@ -789,6 +817,14 @@
       player.currentTime = 0;
       player.play().catch(() => {});
 
+      // Sync blurred background video
+      const bgPlayer = document.getElementById(`mux-bg-${index}`);
+      if (bgPlayer) {
+        bgPlayer.muted = true;
+        bgPlayer.currentTime = 0;
+        bgPlayer.play().catch(() => {});
+      }
+
       // Hide text overlay and dark fade after 6 seconds on video slides
       const slide = player.closest('.slide');
       const content = slide ? slide.querySelector('.slide-content') : null;
@@ -829,6 +865,10 @@
       const player = document.getElementById(`mux-${index}`);
       if (player) {
         player.pause();
+      }
+      const bgPlayer = document.getElementById(`mux-bg-${index}`);
+      if (bgPlayer) {
+        bgPlayer.pause();
       }
     }
 
