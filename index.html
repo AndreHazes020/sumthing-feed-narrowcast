@@ -784,14 +784,14 @@
       player.currentTime = 0;
       player.play().catch(() => {});
 
-      // Hide text overlay after 10 seconds on video slides
+      // Hide text overlay after 6 seconds on video slides
       const slide = player.closest('.slide');
       const content = slide ? slide.querySelector('.slide-content') : null;
       if (content) {
         clearTimeout(videoTextTimer);
         videoTextTimer = setTimeout(() => {
           content.classList.add('video-text-hide');
-        }, 10000);
+        }, 6000);
       }
 
       const onEnded = () => {
