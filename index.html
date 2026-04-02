@@ -551,6 +551,7 @@
     const MAX_RETRIES = 3;
     const INITIAL_PAGE_SIZE = 6;
     const FULL_PAGE_SIZE = 12;
+    const AUTO_RELOAD_INTERVAL = 3 * 60 * 60 * 1000; // 3 hours
 
     let newsItems = [];
     let currentIndex = 0;
@@ -1028,6 +1029,9 @@
     });
 
     init();
+
+    // Auto-reload every 3 hours to pick up new content
+    setInterval(() => location.reload(), AUTO_RELOAD_INTERVAL);
   </script>
 </body>
 </html>
