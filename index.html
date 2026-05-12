@@ -288,17 +288,6 @@
       50% { opacity: 0.4; }
     }
 
-    .story-title {
-      font-family: 'Oswald', sans-serif;
-      font-size: 2rem;
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 1rem;
-      color: var(--text);
-      text-transform: uppercase;
-      max-width: 800px;
-    }
-
     .partner-row {
       display: flex;
       align-items: center;
@@ -472,10 +461,6 @@
     .slide.no-media .news-text {
       font-size: 1.2rem;
       -webkit-line-clamp: 10;
-    }
-
-    .slide.no-media .story-title {
-      font-size: 2.5rem;
     }
 
     /* Error state */
@@ -713,7 +698,6 @@
       const partnerName = item.projectPartnerName || 'Sumthing';
       const partnerLogoUrl = item.projectPartnerLogoUrl ? item.projectPartnerLogoUrl + '-large' : null;
       const categoryLabel = item.projectCategory || 'Impact Update';
-      const storyTitle = item.storyTitle || '';
       const supporterCount = item.storySupporterCount || 0;
 
       const partnerAvatar = partnerLogoUrl
@@ -732,7 +716,6 @@
       const contentHTML = `
         <div class="slide-content">
           <div class="category-badge">${escapeHtml(categoryLabel)}</div>
-          <div class="story-title">${escapeHtml(storyTitle)}</div>
           <div class="partner-row">
             ${partnerAvatar}
             <div class="partner-info">
