@@ -1,0 +1,42 @@
+name: Refresh shared narrowcast data
+
+on:
+  schedule:
+    - cron: '17 */3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: narrowcast-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Fetch a bounded, shared snapshot
+        run: node scripts/refresh-stats.mjs "$RUNNER_TEMP/weekly-stats.json"
+      - name: Publish data without rebuilding the website
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git ls-remote --exit-code --heads origin narrowcast-data > /dev/null; then
+            git fetch origin narrowcast-data
+            git switch -C narrowcast-data FETCH_HEAD
+          else
+            git switch --orphan narrowcast-data
+            git rm -rf .
+          fi
+          cp "$RUNNER_TEMP/weekly-stats.json" weekly-stats.json
+          git add weekly-stats.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Refresh shared narrowcast snapshot'
+          git push origin HEAD:refs/heads/narrowcast-data
