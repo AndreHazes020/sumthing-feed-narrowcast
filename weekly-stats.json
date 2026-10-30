@@ -1,0 +1,126 @@
+{
+  "generatedAt": "2026-10-30T12:50:11.337Z",
+  "stats": {
+    "from": "2026-10-23T00:00:00.000Z",
+    "to": "2026-10-30T00:00:00.000Z",
+    "contributions": 1802,
+    "users": 892,
+    "organizations": 2
+  },
+  "supportersByStory": {
+    "28": {
+      "updatedAt": "2026-10-30T12:36:13.435Z",
+      "logos": [
+        {
+          "id": "0c66a715-ac55-4431-998e-8241463f2112",
+          "username": "PTTOW",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/0c66a715-ac55-4431-998e-8241463f2112/profile-picture"
+        },
+        {
+          "id": "22e6fc6f-a4c3-4977-be5b-3567b12f6b71",
+          "username": "Kenzo",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/22e6fc6f-a4c3-4977-be5b-3567b12f6b71/profile-picture"
+        },
+        {
+          "id": "da2283c2-6225-49a8-b031-481f0d3065e0",
+          "username": "Parker",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/da2283c2-6225-49a8-b031-481f0d3065e0/profile-picture"
+        }
+      ]
+    },
+    "184": {
+      "updatedAt": "2026-10-30T12:36:12.250Z",
+      "logos": []
+    },
+    "377": {
+      "updatedAt": "2026-10-30T12:36:14.219Z",
+      "logos": []
+    },
+    "513": {
+      "updatedAt": "2026-10-30T12:36:13.824Z",
+      "logos": [
+        {
+          "id": "3752d17a-9b8a-40e2-b74b-52ddee5b1247",
+          "username": "HMSHost Schiphol",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/3752d17a-9b8a-40e2-b74b-52ddee5b1247/profile-picture"
+        },
+        {
+          "id": "36ce06ec-5bf6-411a-b9cf-9d5f5fd547f1",
+          "username": "Eriks",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/36ce06ec-5bf6-411a-b9cf-9d5f5fd547f1/profile-picture"
+        },
+        {
+          "id": "ca3b4c95-f91d-4fc8-bb50-06c8bf5159b6",
+          "username": "Albert Heijn",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/ca3b4c95-f91d-4fc8-bb50-06c8bf5159b6/profile-picture"
+        }
+      ]
+    },
+    "594": {
+      "updatedAt": "2026-10-30T12:36:12.650Z",
+      "logos": [
+        {
+          "id": "be5c96f5-78fc-4155-82ab-4576facd257f",
+          "username": "Heembouw Kantoren",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/be5c96f5-78fc-4155-82ab-4576facd257f/profile-picture"
+        }
+      ]
+    },
+    "595": {
+      "updatedAt": "2026-10-30T12:36:11.447Z",
+      "logos": [
+        {
+          "id": "7425feb4-0556-4c46-82cf-6dbe70250d4f",
+          "username": "Visker Interieurbouw B.V.",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/7425feb4-0556-4c46-82cf-6dbe70250d4f/profile-picture"
+        },
+        {
+          "id": "32cd4d60-48ad-480c-8954-417a6115a75e",
+          "username": "PK Betonbewerkingstechnieken",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/32cd4d60-48ad-480c-8954-417a6115a75e/profile-picture"
+        },
+        {
+          "id": "682230ef-3bda-4fe2-8140-fd710600cd74",
+          "username": "Mirato Interieur Projecten BV",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/682230ef-3bda-4fe2-8140-fd710600cd74/profile-picture"
+        },
+        {
+          "id": "22508d92-b0bb-42ab-8743-4d725c7b8820",
+          "username": "Lomans Capelle B.V.",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/22508d92-b0bb-42ab-8743-4d725c7b8820/profile-picture"
+        },
+        {
+          "id": "2b903da3-30de-472b-b75e-6e929b78248e",
+          "username": "Lomans Amersfoort B.V.",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/2b903da3-30de-472b-b75e-6e929b78248e/profile-picture"
+        },
+        {
+          "id": "e3c759e6-31fe-40b6-9d81-002c6008cd9f",
+          "username": "G&P Afbouw B.V.",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/e3c759e6-31fe-40b6-9d81-002c6008cd9f/profile-picture"
+        }
+      ]
+    },
+    "615": {
+      "updatedAt": "2026-10-30T12:36:13.036Z",
+      "logos": []
+    },
+    "628": {
+      "updatedAt": "2026-10-30T12:36:11.832Z",
+      "logos": []
+    }
+  }
+}
