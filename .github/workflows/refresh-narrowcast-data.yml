@@ -33,7 +33,7 @@ jobs:
             git switch -C narrowcast-data FETCH_HEAD
           else
             git switch --orphan narrowcast-data
-            git rm -rf .
+            git rm -rf --ignore-unmatch .
           fi
           cp "$RUNNER_TEMP/weekly-stats.json" weekly-stats.json
           git add weekly-stats.json
