@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T06:21:44.046Z",
+  "generatedAt": "2026-11-02T19:34:33.756Z",
   "stats": {
     "from": "2026-10-26T00:00:00.000Z",
     "to": "2026-11-02T00:00:00.000Z",
@@ -8,26 +8,26 @@
     "organizations": 1
   },
   "supportersByStory": {
-    "28": {
-      "updatedAt": "2026-11-01T22:09:34.915Z",
+    "168": {
+      "updatedAt": "2026-11-02T19:34:33.756Z",
       "logos": [
         {
-          "id": "0c66a715-ac55-4431-998e-8241463f2112",
-          "username": "PTTOW",
+          "id": "f1987697-ea08-48b8-b46b-3f9fff0d1f32",
+          "username": "K + R GmbH",
           "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/0c66a715-ac55-4431-998e-8241463f2112/profile-picture"
+          "profileImageUrl": "https://sumthing-cdn.com/users/f1987697-ea08-48b8-b46b-3f9fff0d1f32/profile-picture"
         },
         {
-          "id": "22e6fc6f-a4c3-4977-be5b-3567b12f6b71",
-          "username": "Kenzo",
+          "id": "57693912-9c7e-4f51-9f04-875a9ab53610",
+          "username": "Pacific For Less",
           "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/22e6fc6f-a4c3-4977-be5b-3567b12f6b71/profile-picture"
+          "profileImageUrl": "https://sumthing-cdn.com/users/57693912-9c7e-4f51-9f04-875a9ab53610/profile-picture"
         },
         {
-          "id": "da2283c2-6225-49a8-b031-481f0d3065e0",
-          "username": "Parker",
+          "id": "a0ef931f-753b-4be8-b635-f9edbd63b071",
+          "username": "John",
           "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/da2283c2-6225-49a8-b031-481f0d3065e0/profile-picture"
+          "profileImageUrl": "https://sumthing-cdn.com/users/a0ef931f-753b-4be8-b635-f9edbd63b071/profile-picture"
         }
       ]
     },
@@ -35,30 +35,44 @@
       "updatedAt": "2026-11-01T22:09:33.460Z",
       "logos": []
     },
-    "377": {
-      "updatedAt": "2026-11-01T22:09:35.875Z",
-      "logos": []
-    },
-    "513": {
-      "updatedAt": "2026-11-01T22:09:35.390Z",
+    "342": {
+      "updatedAt": "2026-11-02T19:34:32.810Z",
       "logos": [
         {
-          "id": "3752d17a-9b8a-40e2-b74b-52ddee5b1247",
-          "username": "HMSHost Schiphol",
+          "id": "609f359d-25a1-465e-9959-77a606613e3b",
+          "username": "KPMG Nederland",
           "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/3752d17a-9b8a-40e2-b74b-52ddee5b1247/profile-picture"
+          "profileImageUrl": "https://sumthing-cdn.com/users/609f359d-25a1-465e-9959-77a606613e3b/profile-picture"
         },
         {
-          "id": "36ce06ec-5bf6-411a-b9cf-9d5f5fd547f1",
-          "username": "Eriks",
+          "id": "250023e7-cb9a-4574-85f5-7b13858512d1",
+          "username": "De Roos",
           "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/36ce06ec-5bf6-411a-b9cf-9d5f5fd547f1/profile-picture"
+          "profileImageUrl": "https://sumthing-cdn.com/users/250023e7-cb9a-4574-85f5-7b13858512d1/profile-picture"
         },
         {
-          "id": "ca3b4c95-f91d-4fc8-bb50-06c8bf5159b6",
-          "username": "Albert Heijn",
+          "id": "2976d570-4e54-4da4-81a0-6dd028026e24",
+          "username": "The Saban Company B.V.",
           "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/ca3b4c95-f91d-4fc8-bb50-06c8bf5159b6/profile-picture"
+          "profileImageUrl": "https://sumthing-cdn.com/users/2976d570-4e54-4da4-81a0-6dd028026e24/profile-picture"
+        },
+        {
+          "id": "6a3a2d41-7af7-48e3-9ef8-38aa232caf19",
+          "username": "Amazon Web Services",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/6a3a2d41-7af7-48e3-9ef8-38aa232caf19/profile-picture"
+        },
+        {
+          "id": "671ce9e3-7bfb-40e8-9fda-5b2f47c4e50a",
+          "username": "Lasting Legal",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/671ce9e3-7bfb-40e8-9fda-5b2f47c4e50a/profile-picture"
+        },
+        {
+          "id": "a4e0574c-038c-4237-a242-47c8dc41fd3c",
+          "username": "Jasper",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/a4e0574c-038c-4237-a242-47c8dc41fd3c/profile-picture"
         }
       ]
     },
@@ -114,9 +128,22 @@
         }
       ]
     },
-    "615": {
-      "updatedAt": "2026-11-01T22:09:34.421Z",
-      "logos": []
+    "610": {
+      "updatedAt": "2026-11-02T19:34:33.287Z",
+      "logos": [
+        {
+          "id": "8ab7bcb7-7ba8-42db-b336-74d020be0edf",
+          "username": "Siren Sisters",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/8ab7bcb7-7ba8-42db-b336-74d020be0edf/profile-picture"
+        },
+        {
+          "id": "2feb7d97-cc56-4fc9-bb43-9220a82022ab",
+          "username": "Reveal Media",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/2feb7d97-cc56-4fc9-bb43-9220a82022ab/profile-picture"
+        }
+      ]
     },
     "628": {
       "updatedAt": "2026-11-01T22:09:33.009Z",
