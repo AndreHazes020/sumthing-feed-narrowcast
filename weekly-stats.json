@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-05T11:08:10.699Z",
+  "generatedAt": "2026-11-05T20:04:28.971Z",
   "stats": {
     "from": "2026-10-29T00:00:00.000Z",
     "to": "2026-11-05T00:00:00.000Z",
@@ -8,35 +8,16 @@
     "organizations": 4
   },
   "supportersByStory": {
-    "168": {
-      "updatedAt": "2026-11-04T19:52:09.146Z",
-      "logos": [
-        {
-          "id": "f1987697-ea08-48b8-b46b-3f9fff0d1f32",
-          "username": "K + R GmbH",
-          "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/f1987697-ea08-48b8-b46b-3f9fff0d1f32/profile-picture"
-        },
-        {
-          "id": "57693912-9c7e-4f51-9f04-875a9ab53610",
-          "username": "Pacific For Less",
-          "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/57693912-9c7e-4f51-9f04-875a9ab53610/profile-picture"
-        },
-        {
-          "id": "a0ef931f-753b-4be8-b635-f9edbd63b071",
-          "username": "John",
-          "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/a0ef931f-753b-4be8-b635-f9edbd63b071/profile-picture"
-        }
-      ]
-    },
     "184": {
       "updatedAt": "2026-11-05T11:08:09.845Z",
       "logos": []
     },
+    "215": {
+      "updatedAt": "2026-11-05T20:04:28.971Z",
+      "logos": []
+    },
     "342": {
-      "updatedAt": "2026-11-04T19:52:07.951Z",
+      "updatedAt": "2026-11-05T20:04:27.966Z",
       "logos": [
         {
           "id": "609f359d-25a1-465e-9959-77a606613e3b",
@@ -128,20 +109,20 @@
         }
       ]
     },
-    "610": {
-      "updatedAt": "2026-11-04T19:52:08.550Z",
+    "618": {
+      "updatedAt": "2026-11-05T20:04:28.477Z",
       "logos": [
         {
-          "id": "8ab7bcb7-7ba8-42db-b336-74d020be0edf",
-          "username": "Siren Sisters",
+          "id": "13f5c2d1-58bc-4020-add4-aff409e20817",
+          "username": "Otaha Activewear",
           "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/8ab7bcb7-7ba8-42db-b336-74d020be0edf/profile-picture"
+          "profileImageUrl": "https://sumthing-cdn.com/users/13f5c2d1-58bc-4020-add4-aff409e20817/profile-picture"
         },
         {
-          "id": "2feb7d97-cc56-4fc9-bb43-9220a82022ab",
-          "username": "Reveal Media",
+          "id": "a0ef931f-753b-4be8-b635-f9edbd63b071",
+          "username": "John",
           "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/2feb7d97-cc56-4fc9-bb43-9220a82022ab/profile-picture"
+          "profileImageUrl": "https://sumthing-cdn.com/users/a0ef931f-753b-4be8-b635-f9edbd63b071/profile-picture"
         }
       ]
     },
