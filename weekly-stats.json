@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T11:27:23.782Z",
+  "generatedAt": "2026-11-12T20:04:04.802Z",
   "stats": {
     "from": "2026-11-05T00:00:00.000Z",
     "to": "2026-11-12T00:00:00.000Z",
@@ -9,11 +9,15 @@
   },
   "supportersByStory": {
     "184": {
-      "updatedAt": "2026-11-11T17:15:22.285Z",
+      "updatedAt": "2026-11-12T20:04:02.886Z",
+      "logos": []
+    },
+    "210": {
+      "updatedAt": "2026-11-12T20:04:03.842Z",
       "logos": []
     },
     "342": {
-      "updatedAt": "2026-11-11T17:15:20.897Z",
+      "updatedAt": "2026-11-12T20:04:01.464Z",
       "logos": [
         {
           "id": "609f359d-25a1-465e-9959-77a606613e3b",
@@ -53,16 +57,12 @@
         }
       ]
     },
-    "344": {
-      "updatedAt": "2026-11-11T17:15:23.725Z",
-      "logos": []
-    },
     "514": {
-      "updatedAt": "2026-11-11T17:15:24.186Z",
+      "updatedAt": "2026-11-12T20:04:04.802Z",
       "logos": []
     },
     "594": {
-      "updatedAt": "2026-11-11T17:15:22.758Z",
+      "updatedAt": "2026-11-12T20:04:04.336Z",
       "logos": [
         {
           "id": "be5c96f5-78fc-4155-82ab-4576facd257f",
@@ -73,7 +73,7 @@
       ]
     },
     "595": {
-      "updatedAt": "2026-11-11T17:15:21.373Z",
+      "updatedAt": "2026-11-12T20:04:01.952Z",
       "logos": [
         {
           "id": "7425feb4-0556-4c46-82cf-6dbe70250d4f",
@@ -113,25 +113,25 @@
         }
       ]
     },
-    "619": {
-      "updatedAt": "2026-11-11T17:15:23.246Z",
+    "618": {
+      "updatedAt": "2026-11-12T20:04:03.365Z",
       "logos": [
+        {
+          "id": "13f5c2d1-58bc-4020-add4-aff409e20817",
+          "username": "Otaha Activewear",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/13f5c2d1-58bc-4020-add4-aff409e20817/profile-picture"
+        },
         {
           "id": "a0ef931f-753b-4be8-b635-f9edbd63b071",
           "username": "John",
           "type": "organization",
           "profileImageUrl": "https://sumthing-cdn.com/users/a0ef931f-753b-4be8-b635-f9edbd63b071/profile-picture"
-        },
-        {
-          "id": "2feb7d97-cc56-4fc9-bb43-9220a82022ab",
-          "username": "Reveal Media",
-          "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/2feb7d97-cc56-4fc9-bb43-9220a82022ab/profile-picture"
         }
       ]
     },
     "628": {
-      "updatedAt": "2026-11-11T17:15:21.824Z",
+      "updatedAt": "2026-11-12T20:04:02.419Z",
       "logos": []
     }
   }
