@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T02:39:00.318Z",
+  "generatedAt": "2026-11-19T11:50:49.791Z",
   "stats": {
     "from": "2026-11-12T00:00:00.000Z",
     "to": "2026-11-19T00:00:00.000Z",
@@ -10,10 +10,6 @@
   "supportersByStory": {
     "184": {
       "updatedAt": "2026-11-19T02:38:58.542Z",
-      "logos": []
-    },
-    "210": {
-      "updatedAt": "2026-11-19T02:38:59.431Z",
       "logos": []
     },
     "342": {
@@ -54,6 +50,17 @@
           "username": "Jasper",
           "type": "organization",
           "profileImageUrl": "https://sumthing-cdn.com/users/a4e0574c-038c-4237-a242-47c8dc41fd3c/profile-picture"
+        }
+      ]
+    },
+    "406": {
+      "updatedAt": "2026-11-19T11:50:49.791Z",
+      "logos": [
+        {
+          "id": "bc0e8d02-986a-48dd-b500-e77c4845bfb6",
+          "username": "Do Good Swimwear",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/bc0e8d02-986a-48dd-b500-e77c4845bfb6/profile-picture"
         }
       ]
     },
@@ -113,20 +120,26 @@
         }
       ]
     },
-    "618": {
-      "updatedAt": "2026-11-19T02:38:58.988Z",
+    "604": {
+      "updatedAt": "2026-11-19T11:50:49.200Z",
       "logos": [
         {
-          "id": "13f5c2d1-58bc-4020-add4-aff409e20817",
-          "username": "Otaha Activewear",
+          "id": "d82c2be2-77ca-4123-acc7-317770a3513f",
+          "username": "aternio",
           "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/13f5c2d1-58bc-4020-add4-aff409e20817/profile-picture"
+          "profileImageUrl": "https://sumthing-cdn.com/users/d82c2be2-77ca-4123-acc7-317770a3513f/profile-picture"
         },
         {
           "id": "a0ef931f-753b-4be8-b635-f9edbd63b071",
           "username": "John",
           "type": "organization",
           "profileImageUrl": "https://sumthing-cdn.com/users/a0ef931f-753b-4be8-b635-f9edbd63b071/profile-picture"
+        },
+        {
+          "id": "2feb7d97-cc56-4fc9-bb43-9220a82022ab",
+          "username": "Reveal Media",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/2feb7d97-cc56-4fc9-bb43-9220a82022ab/profile-picture"
         }
       ]
     },
