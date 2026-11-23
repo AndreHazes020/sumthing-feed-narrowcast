@@ -89,6 +89,19 @@
     };
   }
 
+  // Vertical phone videos get the caption beside them instead of on top.
+  function isPortrait(width, height) {
+    return Number.isFinite(width) && Number.isFinite(height) && width > 0 && height > width;
+  }
+
+  // The figures cover completed days and the slide always shows their dates,
+  // so a snapshot stays valid well past one late or skipped GitHub run.
+  const SNAPSHOT_MAX_AGE = 36 * 60 * 60 * 1000;
+  function snapshotIsFresh(snapshot, now = new Date()) {
+    const generated = Date.parse(snapshot?.generatedAt);
+    return Number.isFinite(generated) && now.getTime() - generated < SNAPSHOT_MAX_AGE;
+  }
+
   function currentAnnouncement(announcements, now = new Date()) {
     return (Array.isArray(announcements) ? announcements : []).find(item => {
       const start = item.displayFrom ? Date.parse(item.displayFrom) : -Infinity;
@@ -99,6 +112,6 @@
 
   root.NarrowcastData = Object.freeze({
     weekWindow, playlist, videoTextDuration, companyLogos, countNewUsers,
-    weeklyStats, currentAnnouncement
+    weeklyStats, currentAnnouncement, isPortrait, snapshotIsFresh
   });
 })(globalThis);

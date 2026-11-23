@@ -25,6 +25,13 @@
       --text-muted: rgba(255, 255, 255, 0.6);
     }
 
+    /* Everything is sized in rem, and rem follows the screen width, so a
+       1080p or 4K screen viewed from across the room gets proportionally
+       larger text (24px base at 1920px wide) instead of laptop-sized type. */
+    html {
+      font-size: clamp(16px, 1.25vw, 48px);
+    }
+
     html, body {
       width: 100vw;
       height: 100vh;
@@ -99,7 +106,10 @@
       animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
+    /* Stay visible while fading, so slides cross-fade instead of cutting to
+       the background colour first. */
     .slide.exiting {
+      visibility: visible;
       animation: slideOut 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       z-index: 1;
     }
@@ -159,10 +169,24 @@
       opacity: 1;
     }
 
+    /* A slow push-in keeps photo slides from looking like a frozen screen. */
+    .slide.active .slide-media img {
+      animation: slowZoom 20s linear forwards;
+    }
+
+    @keyframes slowZoom {
+      from { transform: scale(1); }
+      to { transform: scale(1.06); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .slide.active .slide-media img { animation: none; }
+    }
+
     /* Gallery counter */
     .gallery-counter {
       position: absolute;
-      top: 24px;
+      top: 1.25rem;
       left: 50%;
       transform: translateX(-50%);
       background: rgba(0, 0, 0, 0.5);
@@ -202,7 +226,46 @@
       height: 100%;
       --controls: none;
       --media-object-fit: contain;
+      --media-background-color: transparent;
+      background: transparent;
       z-index: 1;
+    }
+
+    /* Vertical phone videos: video on the right, caption in the free space
+       on the left, so the caption never covers burned-in subtitles. */
+    @media (orientation: landscape) {
+      .slide.portrait-video .slide-media mux-player {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        right: 2rem;
+        width: auto;
+      }
+
+      .slide.portrait-video .slide-overlay {
+        background: linear-gradient(
+          to right,
+          rgba(3, 53, 50, 0.85) 0%,
+          rgba(3, 53, 50, 0.55) 40%,
+          transparent 60%
+        );
+      }
+
+      .slide.portrait-video .slide-content {
+        top: 0;
+        right: 50%;
+        max-height: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 5rem 2.5rem 5rem 3rem;
+      }
+
+      .slide.portrait-video .news-text {
+        font-size: 1.35rem;
+        -webkit-line-clamp: 10;
+      }
     }
 
     /* Bottom gradient overlay for text readability */
@@ -297,8 +360,8 @@
     }
 
     .partner-logo {
-      width: 32px;
-      height: 32px;
+      width: 2rem;
+      height: 2rem;
       border-radius: 50%;
       object-fit: cover;
       border: none;
@@ -307,8 +370,8 @@
     }
 
     .partner-logo-placeholder {
-      width: 32px;
-      height: 32px;
+      width: 2rem;
+      height: 2rem;
       border-radius: 50%;
       background: #fff;
       display: flex;
@@ -341,10 +404,11 @@
 
     .news-text {
       font-family: 'DM Sans', sans-serif;
-      font-size: 1.05rem;
-      line-height: 1.7;
+      font-size: 1.2rem;
+      line-height: 1.55;
       color: var(--text);
-      max-width: 800px;
+      max-width: 38em;
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
       white-space: pre-wrap;
       word-wrap: break-word;
       display: -webkit-box;
@@ -388,8 +452,8 @@
     .supporter-avatars { display: flex; flex-shrink: 0; padding-left: 0.25rem; }
     .supporter-avatar {
       display: block;
-      width: 46px;
-      height: 46px;
+      width: 2.4rem;
+      height: 2.4rem;
       padding: 2px;
       margin-left: -0.25rem;
       border-radius: 50%;
@@ -405,7 +469,7 @@
       background: #fff;
       object-fit: contain;
     }
-    .supporter-caption { font-size: 0.85rem; line-height: 1.5; }
+    .supporter-caption { font-size: 0.9rem; line-height: 1.5; }
     .supporter-caption strong { color: var(--highlight); }
     .supporter-names { color: var(--text-muted); max-width: 34rem; }
 
@@ -419,7 +483,7 @@
       flex-direction: column;
       justify-content: center;
       gap: clamp(1.5rem, 3.5vh, 3rem);
-      padding: 100px clamp(1.5rem, 5vw, 6rem) 65px;
+      padding: 4.5rem clamp(1.5rem, 5vw, 6rem) 3rem;
       overflow-y: auto;
     }
     .weekly-heading { display: flex; justify-content: space-between; gap: 1.5rem; align-items: end; }
@@ -493,7 +557,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 4px;
+      height: 0.2rem;
       background: rgba(255, 255, 255, 0.08);
       z-index: 100;
     }
@@ -509,42 +573,42 @@
     /* Slide indicators */
     .slide-indicators {
       position: fixed;
-      bottom: 20px;
+      bottom: 1rem;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
-      gap: 8px;
+      gap: 0.35rem;
       z-index: 100;
       width: calc(100% - 6rem);
-      max-width: 800px;
+      max-width: 33rem;
       justify-content: center;
     }
 
     .indicator {
-      width: 32px;
-      height: 4px;
-      border-radius: 2px;
+      width: 1.35rem;
+      height: 0.2rem;
+      border-radius: 0.1rem;
       background: rgba(255, 255, 255, 0.2);
       transition: all 0.4s ease;
       cursor: pointer;
-      flex: 0 1 32px;
+      flex: 0 1 1.35rem;
       border: none;
       padding: 0;
     }
 
     .indicator.active {
       background: var(--highlight);
-      width: 48px;
-      flex-basis: 48px;
+      width: 2rem;
+      flex-basis: 2rem;
     }
 
     /* Slide counter */
     .slide-counter {
       position: fixed;
-      top: 24px;
-      right: 32px;
+      top: 1.25rem;
+      right: 1.5rem;
       font-family: 'Oswald', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
       z-index: 100;
       font-weight: 500;
@@ -555,16 +619,17 @@
     /* Logo / branding */
     .branding {
       position: fixed;
-      top: 24px;
-      left: 32px;
+      top: 1.25rem;
+      left: 1.5rem;
       display: flex;
       align-items: center;
       z-index: 100;
     }
 
     .brand-logo {
-      height: 40px;
+      height: 2.25rem;
       width: auto;
+      filter: drop-shadow(0 1px 8px rgba(0, 0, 0, 0.35));
     }
 
     /* No-media slide: colored background with centered text */
@@ -577,7 +642,7 @@
     }
 
     .slide.no-media .news-text {
-      font-size: 1.2rem;
+      font-size: 1.45rem;
       -webkit-line-clamp: 10;
     }
 
@@ -603,7 +668,14 @@
 
     .error-screen p {
       color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      max-width: 36em;
+      text-align: center;
+    }
+
+    .error-screen .error-retry {
       margin-bottom: 1.5rem;
+      font-variant-numeric: tabular-nums;
     }
 
     .error-screen button {
@@ -655,6 +727,8 @@
     const FULL_PAGE_SIZE = 12;
     const AUTO_RELOAD_INTERVAL = 3 * 60 * 60 * 1000; // 3 hours
     const UPDATE_DURATION = 24000;
+    const VIDEO_STALL_LIMIT = 20000; // skip a video that makes no progress for 20 s
+    const ERROR_RETRY_SECONDS = 60;
     const SHARED_SNAPSHOT_URL = 'https://raw.githubusercontent.com/AndreHazes020/sumthing-feed-narrowcast/narrowcast-data/weekly-stats.json';
 
     let newsItems = [];
@@ -808,7 +882,7 @@
     function updateSharedContent() {
       const stats = sharedSnapshot?.stats;
       const generated = Date.parse(sharedSnapshot?.generatedAt);
-      const fresh = Number.isFinite(generated) && Date.now() - generated < 12 * 60 * 60 * 1000;
+      const fresh = NarrowcastData.snapshotIsFresh(sharedSnapshot);
       const formatDay = date => new Date(date).toLocaleDateString('en-GB', {
         day: 'numeric', month: 'short', timeZone: 'UTC'
       });
@@ -901,7 +975,6 @@
               autoplay="false"
               preload="auto"
               max-resolution="2160p"
-              style="width:100%;height:100%;--controls:none;--media-object-fit:contain;--media-background-color:transparent;background:transparent;"
             ></mux-player>
           </div>`;
       } else if (itemHasImages) {
@@ -1040,9 +1113,11 @@
       const slide = player.closest('.slide');
       const content = slide ? slide.querySelector('.slide-content') : null;
       const overlay = slide ? slide.querySelector('.slide-overlay') : null;
+      applyVideoOrientation(player);
       const onTimeUpdate = () => {
         const visibleUntil = NarrowcastData.videoTextDuration(newsItems[index].newsText, player.duration);
-        const hide = player.currentTime >= visibleUntil;
+        // A caption beside a portrait video covers nothing, so it stays.
+        const hide = !slide.classList.contains('portrait-video') && player.currentTime >= visibleUntil;
         slide.dataset.videoTextUntil = String(visibleUntil);
         slide.dataset.videoTime = String(player.currentTime);
         if (content) content.classList.toggle('video-text-hide', hide);
@@ -1056,6 +1131,24 @@
       };
       player.addEventListener('ended', onEnded);
 
+      // An unattended screen should never sit on a broken or frozen video.
+      const onError = () => {
+        console.warn(`Video on slide ${index + 1} failed; skipping.`);
+        nextSlide();
+      };
+      player.addEventListener('error', onError);
+      let lastTime = -1;
+      let lastProgress = Date.now();
+      const stallWatch = setInterval(() => {
+        if (player.currentTime !== lastTime) {
+          lastTime = player.currentTime;
+          lastProgress = Date.now();
+        } else if (Date.now() - lastProgress > VIDEO_STALL_LIMIT) {
+          console.warn(`Video on slide ${index + 1} stalled; skipping.`);
+          nextSlide();
+        }
+      }, 2000);
+
       const onLoaded = () => {
         if (player.duration && isFinite(player.duration)) {
           resetProgress();
@@ -1064,7 +1157,9 @@
       };
       player.addEventListener('loadedmetadata', onLoaded);
       player._narrowcastCleanup = () => {
+        clearInterval(stallWatch);
         player.removeEventListener('ended', onEnded);
+        player.removeEventListener('error', onError);
         player.removeEventListener('loadedmetadata', onLoaded);
         player.removeEventListener('timeupdate', onTimeUpdate);
       };
@@ -1169,14 +1264,36 @@
         if (video._hlsInit) return;
         video._hlsInit = true;
         const src = `https://stream.mux.com/${video.dataset.playbackId}.m3u8`;
-        if (video.canPlayType('application/vnd.apple.mpegurl')) {
-          video.src = src;
-        } else if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-          const hls = new Hls({ maxMaxBufferLength: 10 });
+        // Prefer hls.js: Chromium can answer "maybe" to native HLS and then
+        // never load it, which left the blurred background empty. Native HLS
+        // remains the fallback for Safari and iOS.
+        if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+          const hls = new Hls({ maxMaxBufferLength: 10, startLevel: 0 });
+          // The background is blurred by 40px; the lowest rendition is plenty
+          // and keeps the extra stream's bandwidth small.
+          hls.on(Hls.Events.MANIFEST_PARSED, () => { hls.autoLevelCapping = 0; });
           hls.loadSource(src);
           hls.attachMedia(video);
           video._hls = hls;
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = src;
         }
+      });
+    }
+
+    function applyVideoOrientation(player) {
+      const slide = player.closest('.slide');
+      if (!slide) return;
+      slide.classList.toggle('portrait-video',
+        NarrowcastData.isPortrait(player.videoWidth, player.videoHeight));
+    }
+
+    function watchVideoOrientation() {
+      document.querySelectorAll('mux-player').forEach(player => {
+        if (player._orientationWatched) return;
+        player._orientationWatched = true;
+        player.addEventListener('loadedmetadata', () => applyVideoOrientation(player));
+        applyVideoOrientation(player);
       });
     }
 
@@ -1189,6 +1306,7 @@
         carousel.appendChild(slide);
       });
       initBgVideos();
+      watchVideoOrientation();
     }
 
     async function init() {
@@ -1222,6 +1340,8 @@
       }
     }
 
+    // Nobody is around to press a button on a wall screen, so it retries
+    // by itself instead of waiting for the three-hour reload.
     function showError(title, message) {
       document.getElementById('loading').classList.add('hidden');
       const errDiv = document.createElement('div');
@@ -1229,8 +1349,19 @@
       errDiv.innerHTML = `
         <h2>${escapeHtml(title)}</h2>
         <p>${escapeHtml(message)}</p>
-        <button onclick="location.reload()">Try Again</button>`;
+        <p class="error-retry">Trying again in <span data-retry-seconds>${ERROR_RETRY_SECONDS}</span> seconds.</p>
+        <button type="button" onclick="location.reload()">Try again now</button>`;
       document.body.appendChild(errDiv);
+      let remaining = ERROR_RETRY_SECONDS;
+      const counter = errDiv.querySelector('[data-retry-seconds]');
+      const countdown = setInterval(() => {
+        remaining--;
+        counter.textContent = String(Math.max(remaining, 0));
+        if (remaining <= 0) {
+          clearInterval(countdown);
+          location.reload();
+        }
+      }, 1000);
     }
 
     document.addEventListener('keydown', (e) => {
