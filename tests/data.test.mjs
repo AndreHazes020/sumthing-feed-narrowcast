@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
 import '../narrowcast-data.js';
 
 const data = globalThis.NarrowcastData;
@@ -72,8 +73,34 @@ test('failed statistics show unavailable values, while a real zero is retained',
   assert.equal(result.organizations, 0);
 });
 
-test('the offsite announcement expires after 11 November in Amsterdam', () => {
-  const news = [{ title: 'Offsite', displayUntil: '2026-11-12T00:00:00+01:00' }];
+test('an announcement disappears at its displayUntil time', () => {
+  const news = [{ title: 'Team news', displayUntil: '2026-11-12T00:00:00+01:00' }];
   assert.equal(data.currentAnnouncement(news, new Date('2026-11-11T22:59:59Z')), news[0]);
   assert.equal(data.currentAnnouncement(news, new Date('2026-11-11T23:00:00Z')), null);
+});
+
+test('every announcement in updates.json has an end date, so none stays on screen forever', async () => {
+  const { announcements } = JSON.parse(await fs.readFile(new URL('../updates.json', import.meta.url), 'utf8'));
+  assert.ok(Array.isArray(announcements));
+  for (const item of announcements) {
+    assert.ok(Number.isFinite(Date.parse(item.displayUntil)), `${item.title} needs a valid displayUntil`);
+  }
+});
+
+test('portrait detection only applies to taller-than-wide videos with known dimensions', () => {
+  assert.equal(data.isPortrait(1080, 1920), true);
+  assert.equal(data.isPortrait(576, 1024), true);
+  assert.equal(data.isPortrait(1920, 1080), false);
+  assert.equal(data.isPortrait(1080, 1080), false);
+  assert.equal(data.isPortrait(0, 0), false);
+  assert.equal(data.isPortrait(undefined, 1920), false);
+});
+
+test('weekly figures stay visible for 36 hours, then are hidden', () => {
+  const generatedAt = '2026-11-23T01:48:56Z';
+  assert.equal(data.snapshotIsFresh({ generatedAt }, new Date('2026-11-23T12:00:00Z')), true);
+  assert.equal(data.snapshotIsFresh({ generatedAt }, new Date('2026-11-24T13:48:00Z')), true);
+  assert.equal(data.snapshotIsFresh({ generatedAt }, new Date('2026-11-24T13:49:00Z')), false);
+  assert.equal(data.snapshotIsFresh({}, new Date()), false);
+  assert.equal(data.snapshotIsFresh(null, new Date()), false);
 });
