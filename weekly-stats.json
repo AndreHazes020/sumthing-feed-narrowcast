@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T02:18:42.099Z",
+  "generatedAt": "2026-11-24T13:54:37.272Z",
   "stats": {
     "from": "2026-11-17T00:00:00.000Z",
     "to": "2026-11-24T00:00:00.000Z",
@@ -53,14 +53,20 @@
         }
       ]
     },
-    "406": {
-      "updatedAt": "2026-11-24T02:18:40.993Z",
+    "398": {
+      "updatedAt": "2026-11-24T13:54:37.272Z",
       "logos": [
         {
-          "id": "bc0e8d02-986a-48dd-b500-e77c4845bfb6",
-          "username": "Do Good Swimwear",
+          "id": "a23187cd-9b34-4c10-843e-15e0ec135a53",
+          "username": "GOTBAG",
           "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/bc0e8d02-986a-48dd-b500-e77c4845bfb6/profile-picture"
+          "profileImageUrl": "https://sumthing-cdn.com/users/a23187cd-9b34-4c10-843e-15e0ec135a53/profile-picture"
+        },
+        {
+          "id": "c62aa255-a412-4d0e-9ada-fc7c2d445085",
+          "username": "Coco and Kandy",
+          "type": "organization",
+          "profileImageUrl": "https://sumthing-cdn.com/users/c62aa255-a412-4d0e-9ada-fc7c2d445085/profile-picture"
         }
       ]
     },
@@ -120,28 +126,9 @@
         }
       ]
     },
-    "604": {
-      "updatedAt": "2026-11-24T02:18:40.420Z",
-      "logos": [
-        {
-          "id": "d82c2be2-77ca-4123-acc7-317770a3513f",
-          "username": "aternio",
-          "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/d82c2be2-77ca-4123-acc7-317770a3513f/profile-picture"
-        },
-        {
-          "id": "a0ef931f-753b-4be8-b635-f9edbd63b071",
-          "username": "John",
-          "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/a0ef931f-753b-4be8-b635-f9edbd63b071/profile-picture"
-        },
-        {
-          "id": "2feb7d97-cc56-4fc9-bb43-9220a82022ab",
-          "username": "Reveal Media",
-          "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/2feb7d97-cc56-4fc9-bb43-9220a82022ab/profile-picture"
-        }
-      ]
+    "602": {
+      "updatedAt": "2026-11-24T13:54:36.805Z",
+      "logos": []
     },
     "628": {
       "updatedAt": "2026-11-24T02:18:39.297Z",
