@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T03:38:14.619Z",
+  "generatedAt": "2026-11-26T17:02:53.611Z",
   "stats": {
     "from": "2026-11-19T00:00:00.000Z",
     "to": "2026-11-26T00:00:00.000Z",
@@ -9,11 +9,15 @@
   },
   "supportersByStory": {
     "184": {
-      "updatedAt": "2026-11-25T08:46:45.721Z",
+      "updatedAt": "2026-11-26T17:02:51.996Z",
+      "logos": []
+    },
+    "220": {
+      "updatedAt": "2026-11-26T17:02:49.871Z",
       "logos": []
     },
     "342": {
-      "updatedAt": "2026-11-25T08:46:44.055Z",
+      "updatedAt": "2026-11-26T17:02:50.415Z",
       "logos": [
         {
           "id": "609f359d-25a1-465e-9959-77a606613e3b",
@@ -53,29 +57,19 @@
         }
       ]
     },
-    "398": {
-      "updatedAt": "2026-11-25T19:23:59.918Z",
+    "382": {
+      "updatedAt": "2026-11-26T17:02:53.071Z",
       "logos": [
         {
-          "id": "a23187cd-9b34-4c10-843e-15e0ec135a53",
-          "username": "GOTBAG",
+          "id": "a0ef931f-753b-4be8-b635-f9edbd63b071",
+          "username": "John",
           "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/a23187cd-9b34-4c10-843e-15e0ec135a53/profile-picture"
-        },
-        {
-          "id": "c62aa255-a412-4d0e-9ada-fc7c2d445085",
-          "username": "Coco and Kandy",
-          "type": "organization",
-          "profileImageUrl": "https://sumthing-cdn.com/users/c62aa255-a412-4d0e-9ada-fc7c2d445085/profile-picture"
+          "profileImageUrl": "https://sumthing-cdn.com/users/a0ef931f-753b-4be8-b635-f9edbd63b071/profile-picture"
         }
       ]
     },
-    "514": {
-      "updatedAt": "2026-11-25T08:46:46.821Z",
-      "logos": []
-    },
     "594": {
-      "updatedAt": "2026-11-25T08:46:46.275Z",
+      "updatedAt": "2026-11-26T17:02:53.611Z",
       "logos": [
         {
           "id": "be5c96f5-78fc-4155-82ab-4576facd257f",
@@ -86,7 +80,7 @@
       ]
     },
     "595": {
-      "updatedAt": "2026-11-25T08:46:44.650Z",
+      "updatedAt": "2026-11-26T17:02:50.969Z",
       "logos": [
         {
           "id": "7425feb4-0556-4c46-82cf-6dbe70250d4f",
@@ -126,12 +120,12 @@
         }
       ]
     },
-    "602": {
-      "updatedAt": "2026-11-25T19:23:59.392Z",
+    "615": {
+      "updatedAt": "2026-11-26T17:02:52.517Z",
       "logos": []
     },
     "628": {
-      "updatedAt": "2026-11-25T08:46:45.187Z",
+      "updatedAt": "2026-11-26T17:02:51.493Z",
       "logos": []
     }
   }
